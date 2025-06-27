@@ -7,3 +7,11 @@
 
 [context.deploy-preview.environment]
   NODE_VERSION = "20"
+
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+    paths = [
+      "dist/img", # Images processed with eleventy-img plugin
+      ".cache",    # Remote Asset Cache
+    ]
