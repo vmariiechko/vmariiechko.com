@@ -1,4 +1,11 @@
+const shortcodes = require('./_11ty/shortcodes.js');
+
 module.exports = function (eleventyConfig) {
+  // Register Shortcodes
+  Object.keys(shortcodes).forEach((shortcodeName) => {
+    eleventyConfig.addShortcode(shortcodeName, shortcodes[shortcodeName]);
+  });
+
   // Passthrough copy for static assets and images
   eleventyConfig.addPassthroughCopy('src/static');
   eleventyConfig.addPassthroughCopy('src/assets/images');
