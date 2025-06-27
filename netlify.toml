@@ -1,15 +1,9 @@
-# Netlify build and deployment settings
-
 [build]
-  # Command to build the site
   command = "npm run build"
-  # Directory to deploy
   publish = "_site/"
 
 [context.production.environment]
-  # Set Node.js version for production builds
   NODE_VERSION = "20"
 
 [context.deploy-preview.environment]
-  # Set Node.js version for deploy previews
   NODE_VERSION = "20"
