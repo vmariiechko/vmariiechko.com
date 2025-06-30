@@ -1,4 +1,5 @@
 const shortcodes = require('./_11ty/shortcodes.js');
+const { DateTime } = require('luxon');
 
 module.exports = function (eleventyConfig) {
   // Register Shortcodes
@@ -6,9 +7,22 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addShortcode(shortcodeName, shortcodes[shortcodeName]);
   });
 
-  // Passthrough copy for static assets and images
+  // Passthrough copy for co-located post assets and static files
   eleventyConfig.addPassthroughCopy('src/static');
-  eleventyConfig.addPassthroughCopy('src/assets/images');
+  eleventyConfig.addPassthroughCopy('src/content/posts/**/*.jpg');
+  eleventyConfig.addPassthroughCopy('src/content/posts/**/*.png');
+
+  // Add a filter for readable dates
+  eleventyConfig.addFilter('readableDate', (dateObj) => {
+    return DateTime.fromJSDate(dateObj, { zone: 'utc' }).toFormat(
+      'dd LLL yyyy'
+    );
+  });
+
+  // Create a collection of posts
+  eleventyConfig.addCollection('posts', (collectionApi) => {
+    return collectionApi.getFilteredByGlob('src/content/posts/**/*.md');
+  });
 
   return {
     // Set custom directories for input, output, includes, and data
