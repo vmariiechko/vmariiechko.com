@@ -6,6 +6,13 @@
     <title>{{ title or site.title }}</title>
     <meta name="description" content="{{ description or site.description }}" />
     <link rel="stylesheet" href="/css/style.css" />
+
+    <!-- Favicon Guide: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs -->
+    <link rel="icon" href="{{ '/favicons/favicon.ico' | url }}" sizes="32x32">
+    <link rel="icon" href="{{ '/favicons/icon.svg' | url }}" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="{{ '/favicons/apple-touch-icon.png' | url }}">
+    <link rel="manifest" href="/manifest.webmanifest">
+
   </head>
   <body class="bg-gray-100 text-gray-800 antialiased">
     <div class="container mx-auto max-w-3xl p-4">
