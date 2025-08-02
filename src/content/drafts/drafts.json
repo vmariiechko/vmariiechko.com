@@ -1,0 +1,5 @@
+{
+  "layout": "layouts/post.njk",
+  "permalink": "drafts/{{ page.fileSlug }}/index.html",
+  "draft": true
+}
