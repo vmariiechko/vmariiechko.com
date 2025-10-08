@@ -1,0 +1,30 @@
+<footer class="mt-12 pt-6 border-t border-border text-sm text-muted">
+  <div class="flex justify-between">
+    <div>
+      <h3 class="font-bold text-text">Topics</h3>
+      <ul class="mt-2 space-y-1">
+        <li><a href="/topics/databricks/" class="hover:text-text">Databricks</a></li>
+        <li><a href="/topics/dlthub/" class="hover:text-text">dltHub</a></li>
+        <li><a href="/topics/architecture/" class="hover:text-text">Architecture</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold text-text">Feeds</h3>
+      <ul class="mt-2 space-y-1">
+        <li><a href="/feed.xml" class="hover:text-text">Writing (RSS)</a></li>
+        <li><a href="/notes.xml" class="hover:text-text">Short Bytes (RSS)</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold text-text">Connect</h3>
+      <ul class="mt-2 space-y-1">
+        <li><a href="https://github.com/vmariiechko" class="hover:text-text" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/mariiechko/" class="hover:text-text" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="mailto:{{ site.author.email }}" class="hover:text-text">Email</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="mt-8 text-center">
+    <p>&copy; {% year %} {{ site.author.name }}. All rights reserved.</p>
+  </div>
+</footer>

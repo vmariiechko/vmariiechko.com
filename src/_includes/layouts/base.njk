@@ -21,23 +21,13 @@
   </head>
   <body class="bg-gray-100 text-gray-800 antialiased">
     <div class="container mx-auto max-w-3xl p-4">
-      <header class="mb-8">
-        <h1 class="text-3xl font-bold">
-          <a href="/" class="text-gray-900 hover:text-blue-600">{{ site.title }}</a>
-        </h1>
-        <p class="text-gray-600">{{ site.description }}</p>
-        {% if process.env.NODE_ENV !== 'production' %}
-        <a href="/drafts" class="text-blue-600 hover:underline">Drafts</a>
-        {% endif %}
-      </header>
+      {% include "partials/header.njk" %}
 
-      <main>
+      <main class="mt-8">
         {{ content | safe }}
       </main>
 
-      <footer class="mt-12 pt-6 border-t border-gray-300 text-center text-sm text-gray-500">
-        <p>&copy; {% year %} {{ site.author.name }}. All rights reserved.</p>
-      </footer>
+      {% include "partials/footer.njk" %}
     </div>
 
     <!-- Umami analytics script will be injected here -->
