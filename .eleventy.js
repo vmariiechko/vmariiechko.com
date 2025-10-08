@@ -21,6 +21,7 @@ module.exports = function (eleventyConfig) {
 
     // Passthrough copy for static assets
     eleventyConfig.addPassthroughCopy({ 'src/static/favicons': 'favicons' });
+    eleventyConfig.addPassthroughCopy('src/assets/fonts');
     eleventyConfig.addPassthroughCopy('src/robots.txt');
     eleventyConfig.addPassthroughCopy('src/manifest.webmanifest');
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.jpg');

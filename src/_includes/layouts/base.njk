@@ -7,6 +7,11 @@
     <meta name="description" content="{{ description or site.description }}" />
     <link rel="stylesheet" href="/css/style.css" />
 
+    <!-- Preload Fonts -->
+    <link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/assets/fonts/jetbrains-mono-regular.woff2" as="font" type="font/woff2" crossorigin>
+
     <!-- Favicon Guide: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs -->
     <link rel="icon" href="{{ '/favicons/favicon.ico' | url }}" sizes="32x32">
     <link rel="icon" href="{{ '/favicons/icon.svg' | url }}" type="image/svg+xml">
@@ -38,3 +43,6 @@
     <!-- Umami analytics script will be injected here -->
   </body>
 </html>
+
+
+
