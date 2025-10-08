@@ -37,15 +37,15 @@
   --ff-serif: "Newsreader", "Iowan Old Style", "Times New Roman", Times, serif;
   --ff-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
 
-  /* Colors (light) */
-  --bg: #ffffff;
-  --text: #111827;
-  --muted: #4b5563;
-  --border: #e5e7eb;
-  --link: #1d4ed8;
-  --link-visited: #6d28d9;
-  --accent: #0ea5e9;
-  --code-bg: #f6f7f9;
+  /* Colors (dark, default) */
+    --bg: #0b0f13;
+    --text: #e5e7eb;
+    --muted: #a1a1aa;
+    --border: #23262b;
+    --link: #93c5fd;
+    --link-visited: #c4b5fd;
+    --accent: #38bdf8;
+    --code-bg: #0f141a;
 
   /* Type scale */
   --fs-h1: clamp(2rem, 1.6rem + 2.2vw, 3rem);
@@ -70,16 +70,17 @@
   font-synthesis-weight: none; /* avoid synthetic bold jumps */
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --bg: #0b0f13;
-    --text: #e5e7eb;
-    --muted: #a1a1aa;
-    --border: #23262b;
-    --link: #93c5fd;
-    --link-visited: #c4b5fd;
-    --accent: #38bdf8;
-    --code-bg: #0f141a;
+    /* Colors (light) */
+    --bg: #ffffff;
+    --text: #111827;
+    --muted: #4b5563;
+    --border: #e5e7eb;
+    --link: #1d4ed8;
+    --link-visited: #6d28d9;
+    --accent: #0ea5e9;
+    --code-bg: #f6f7f9;
   }
 }
 
@@ -169,5 +170,124 @@
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+}
+
+@layer components {
+  .tag-chip {
+    @apply inline-block bg-code-bg border border-border rounded-full px-3 py-1 text-sm font-medium text-muted;
+  }
+
+  /* PrismJS Okaidia Theme */
+  code[class*="language-"],
+  pre[class*="language-"] {
+    color: #f8f8f2;
+    background: none;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    font-family: var(--ff-mono);
+    font-size: 1em;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+  }
+  pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+    border-radius: 0.3em;
+  }
+  :not(pre) > code[class*="language-"],
+  pre[class*="language-"] {
+    background: #272822;
+  }
+  .token.comment,
+  .token.prolog,
+  .token.doctype,
+  .token.cdata {
+    color: #8292a2;
+  }
+  .token.punctuation {
+    color: #f8f8f2;
+  }
+  .token.namespace {
+    opacity: .7;
+  }
+  .token.property,
+  .token.tag,
+  .token.constant,
+  .token.symbol,
+  .token.deleted {
+    color: #f92672;
+  }
+  .token.boolean,
+  .token.number {
+    color: #ae81ff;
+  }
+  .token.selector,
+  .token.attr-name,
+  .token.string,
+  .token.char,
+  .token.builtin,
+  .token.inserted {
+    color: #a6e22e;
+  }
+  .token.operator,
+  .token.entity,
+  .token.url,
+  .language-css .token.string,
+  .style .token.string,
+  .token.variable {
+    color: #f8f8f2;
+  }
+  .token.atrule,
+  .token.attr-value,
+  .token.function,
+  .token.class-name {
+    color: #e6db74;
+  }
+  .token.keyword {
+    color: #66d9ef;
+  }
+  .token.regex,
+  .token.important {
+    color: #fd971f;
+  }
+  .token.important,
+  .token.bold {
+    font-weight: bold;
+  }
+  .token.italic {
+    font-style: italic;
+  }
+  .token.entity {
+    cursor: help;
+  }
+
+  /* Callout Styles */
+  .callout-info, .callout-success, .callout-warning {
+    @apply my-6 p-4 border-l-4 rounded-r-lg;
+  }
+  .callout-info {
+    @apply bg-sky-100 border-sky-500 text-sky-900 dark:bg-sky-900/30 dark:border-sky-500 dark:text-sky-200;
+  }
+  .callout-success {
+    @apply bg-emerald-100 border-emerald-500 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-500 dark:text-emerald-200;
+  }
+  .callout-warning {
+    @apply bg-amber-100 border-amber-500 text-amber-900 dark:bg-amber-900/30 dark:border-amber-500 dark:text-amber-200;
+  }
+
+  .copy-button {
+    @apply absolute top-2 right-2 px-2 py-1 text-xs rounded border border-border bg-code-bg text-muted hover:bg-border hover:text-text transition-colors;
   }
 }

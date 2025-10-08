@@ -3,10 +3,26 @@ layout: layouts/base.njk
 ---
 
 <article class="prose lg:prose-xl">
-  <h1>{{ title }}</h1>
-  <p class="text-sm text-gray-500">Published on: {{ date | readableDate }}</p>
+  <header>
+    <h1>{{ title }}</h1>
+    <p class="text-sm text-muted">
+      Published on: <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+      {% if readingTime %}
+        <span>&bull; {{ readingTime }} min read</span>
+      {% endif %}
+    </p>
+    {% if tags %}
+      <div class="flex flex-wrap gap-2 mt-4">
+        {% for tag in tags %}
+          <span class="tag-chip">{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
 
-  {{ content | safe }}
+  <div class="mt-8">
+    {{ content | safe }}
+  </div>
 
   <!-- Giscus comments will be injected here -->
 </article>

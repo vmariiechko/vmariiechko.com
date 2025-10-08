@@ -16,6 +16,7 @@ module.exports = {
         accent: 'var(--accent)',
         link: 'var(--link)',
         'link-visited': 'var(--link-visited)',
+        'code-bg': 'var(--code-bg)',
       },
     },
   },
