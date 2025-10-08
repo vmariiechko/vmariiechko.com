@@ -1,0 +1,27 @@
+---
+layout: layouts/base.njk
+---
+
+<article class="prose lg:prose-xl">
+  <header>
+    <h1>{{ title }}</h1>
+    <p class="text-sm text-muted">
+      Published on: <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+    </p>
+    {% if tags %}
+      <div class="flex flex-wrap gap-2 mt-4">
+        {% for tag in tags %}
+          {% if tag != 'notes' %}
+            <span class="tag-chip">{{ tag }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <div class="mt-8">
+    {{ content | safe }}
+  </div>
+
+  <!-- Giscus comments will be injected here -->
+</article>

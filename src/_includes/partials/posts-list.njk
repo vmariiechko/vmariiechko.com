@@ -2,9 +2,9 @@
   {%- for post in collections.posts | reverse -%}
     <li class="border-b pb-4">
       <h2 class="text-2xl font-bold">
-        <a href="{{ post.url }}" class="text-gray-900 hover:text-blue-600">{{ post.data.title }}</a>
+        <a href="{{ post.url }}" class="text-text hover:text-link">{{ post.data.title }}</a>
       </h2>
-      <p class="text-sm text-gray-500 mt-1">
+      <p class="text-sm text-muted mt-1">
         {{ post.date | readableDate }}
       </p>
       {% if post.data.description %}

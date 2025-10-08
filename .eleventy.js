@@ -46,6 +46,27 @@ module.exports = function (eleventyConfig) {
         return collectionApi.getFilteredByGlob('src/content/posts/**/*.md').filter(post => !post.data.draft);
     });
 
+    // Create a collection of notes (short bytes)
+    eleventyConfig.addCollection('notes', (collectionApi) => {
+        return collectionApi.getFilteredByGlob('src/content/notes/**/*.md').filter(note => !note.data.draft);
+    });
+
+    // Create a collection of items grouped by topic
+    eleventyConfig.addCollection('itemsByTopic', (collectionApi) => {
+        const itemsByTopic = {};
+        collectionApi.getAll().forEach((item) => {
+            if (item.data.topics) {
+                item.data.topics.forEach((topic) => {
+                    if (!itemsByTopic[topic]) {
+                        itemsByTopic[topic] = [];
+                    }
+                    itemsByTopic[topic].push(item);
+                });
+            }
+        });
+        return itemsByTopic;
+    });
+
     // Create a collection of drafts
     eleventyConfig.addCollection('drafts', (collectionApi) => {
         return collectionApi.getFilteredByGlob('src/content/drafts/**/*.md');

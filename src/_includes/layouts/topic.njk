@@ -1,0 +1,32 @@
+---
+layout: layouts/base.njk
+---
+
+<header>
+  <h1>{{ title }}</h1>
+  {% if description %}
+    <p class="text-muted">{{ description }}</p>
+  {% endif %}
+</header>
+
+<div class="mt-8">
+  <ul class="space-y-4">
+    {% set itemsByTopic = collections.itemsByTopic[topic] | reverse %}
+    {% for item in itemsByTopic %}
+      <li class="border-b border-border pb-4">
+        <h2 class="text-2xl font-bold">
+          <a href="{{ item.url }}" class="text-text hover:text-link">{{ item.data.title }}</a>
+        </h2>
+        <p class="text-sm text-muted mt-1">
+          {{ item.date | readableDate }}
+          <span class="ml-2 px-2 py-1 text-xs rounded-full bg-code-bg border border-border">
+            {{ item.data.tags[0] | capitalize }}
+          </span>
+        </p>
+        {% if item.data.description %}
+          <p class="mt-2">{{ item.data.description }}</p>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</div>

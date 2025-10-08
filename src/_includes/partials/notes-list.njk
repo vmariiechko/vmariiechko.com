@@ -1,0 +1,15 @@
+<ul class="space-y-4">
+  {%- for note in collections.notes | reverse -%}
+    <li class="border-b pb-4">
+      <h2 class="text-2xl font-bold">
+        <a href="{{ note.url }}" class="text-text hover:text-link">{{ note.data.title }}</a>
+      </h2>
+      <p class="text-sm text-muted mt-1">
+        {{ note.date | readableDate }}
+      </p>
+      {% if note.data.description %}
+        <p class="mt-2">{{ note.data.description }}</p>
+      {% endif %}
+    </li>
+  {%- endfor -%}
+</ul>
