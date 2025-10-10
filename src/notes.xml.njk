@@ -1,0 +1,30 @@
+---
+permalink: /notes.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>{{ site.title }} - Short Bytes</title>
+  <subtitle>Quick notes, tips, and code snippets.</subtitle>
+  <link href="{{ permalink | absoluteUrl(site.url) }}" rel="self"/>
+  <link href="{{ site.url }}/short-bytes/"/>
+  <updated>{{ collections.notes | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <id>{{ site.url }}/short-bytes/</id>
+  <author>
+    <name>{{ site.author.name }}</name>
+    <email>{{ site.author.email }}</email>
+  </author>
+  {%- for note in collections.notes %}
+  {%- set absoluteNoteUrl = note.url | absoluteUrl(site.url) %}
+  <entry>
+    <title>{{ note.data.title }}</title>
+    <link href="{{ absoluteNoteUrl }}"/>
+    <updated>{{ note.date | dateToRfc3339 }}</updated>
+    <id>{{ absoluteNoteUrl }}</id>
+    <summary>{{ note.data.description }}</summary>
+    <content type="html"><![CDATA[
+      {{ note.templateContent | htmlToAbsoluteUrls(absoluteNoteUrl) | safe }}
+    ]]></content>
+  </entry>
+  {%- endfor %}
+</feed>
