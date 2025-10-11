@@ -22,10 +22,11 @@
 
   </head>
   <body class="antialiased">
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="container mx-auto max-w-3xl p-4">
       {% include "partials/header.njk" %}
 
-      <main class="mt-8">
+      <main id="main-content" class="mt-8">
         {{ content | safe }}
       </main>
 

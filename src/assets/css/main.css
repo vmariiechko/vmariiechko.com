@@ -290,4 +290,20 @@
   .copy-button {
     @apply absolute top-2 right-2 px-2 py-1 text-xs rounded border border-border bg-code-bg text-muted hover:bg-border hover:text-text transition-colors;
   }
+
+  .captioned-figure {
+    @apply my-6;
+  }
+  .captioned-figure figcaption {
+    @apply text-sm text-center text-muted mt-2;
+  }
+}
+
+@layer utilities {
+  .skip-link {
+    @apply sr-only;
+  }
+  .skip-link:focus {
+    @apply not-sr-only absolute top-4 left-4 z-50 bg-bg text-text px-4 py-2 rounded-md;
+  }
 }
