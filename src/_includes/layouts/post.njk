@@ -14,7 +14,9 @@ layout: layouts/base.njk
     {% if tags %}
       <div class="flex flex-wrap gap-2 mt-4">
         {% for tag in tags %}
-          <span class="tag-chip">{{ tag }}</span>
+          {% if tag != 'posts' %}
+            <span class="tag-chip">{{ tag }}</span>
+          {% endif %}
         {% endfor %}
       </div>
     {% endif %}
@@ -24,5 +26,6 @@ layout: layouts/base.njk
     {{ content | safe }}
   </div>
 
-  <!-- Giscus comments will be injected here -->
+  <div id="comments" class="mt-12"></div>
+  <script src="/assets/js/comments.js"></script>
 </article>
