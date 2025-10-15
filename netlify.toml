@@ -12,6 +12,5 @@
   package = "netlify-plugin-cache"
   [plugins.inputs]
     paths = [
-      "dist/img", # Images processed with eleventy-img plugin
-      ".cache",    # Remote Asset Cache
+      "_site/img"
     ]
