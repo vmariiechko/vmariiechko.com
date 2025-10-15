@@ -1,0 +1,5 @@
+{
+  "layout": "layouts/short-byte.njk",
+  "permalink": "short-bytes/{{ page.fileSlug }}/index.html",
+  "tags": "shortBytes"
+}

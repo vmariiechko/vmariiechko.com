@@ -3,7 +3,7 @@
 {% set absolutePageUrl = page.url | url | absoluteUrl(site.url) %}
 {% set socialImage = image or site.image %}
 {% set socialImageUrl = socialImage | url | absoluteUrl(site.url) %}
-{% set isPost = layout == 'layouts/post.njk' or layout == 'layouts/note.njk' %}
+{% set isPost = layout == 'layouts/post.njk' or layout == 'layouts/short-byte.njk' %}
 
 <meta name="author" content="{{ site.author.name }}">
 <meta name="description" content="{{ pageDescription }}">

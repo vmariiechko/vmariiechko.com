@@ -1,5 +1,5 @@
 ---
-permalink: /notes.xml
+permalink: /short-bytes.xml
 eleventyExcludeFromCollections: true
 ---
 <?xml version="1.0" encoding="utf-8"?>
@@ -8,22 +8,22 @@ eleventyExcludeFromCollections: true
   <subtitle>Quick notes, tips, and code snippets.</subtitle>
   <link href="{{ permalink | absoluteUrl(site.url) }}" rel="self"/>
   <link href="{{ site.url }}/short-bytes/"/>
-  <updated>{{ collections.notes | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <updated>{{ collections.shortBytes | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
   <id>{{ site.url }}/short-bytes/</id>
   <author>
     <name>{{ site.author.name }}</name>
     <email>{{ site.author.email }}</email>
   </author>
-  {%- for note in collections.notes %}
-  {%- set absoluteNoteUrl = note.url | absoluteUrl(site.url) %}
+  {%- for shortByte in collections.shortBytes %}
+  {%- set absoluteShortByteUrl = shortByte.url | absoluteUrl(site.url) %}
   <entry>
-    <title>{{ note.data.title }}</title>
-    <link href="{{ absoluteNoteUrl }}"/>
-    <updated>{{ note.date | dateToRfc3339 }}</updated>
-    <id>{{ absoluteNoteUrl }}</id>
-    <summary>{{ note.data.description }}</summary>
+    <title>{{ shortByte.data.title }}</title>
+    <link href="{{ absoluteShortByteUrl }}"/>
+    <updated>{{ shortByte.date | dateToRfc3339 }}</updated>
+    <id>{{ absoluteShortByteUrl }}</id>
+    <summary>{{ shortByte.data.description }}</summary>
     <content type="html"><![CDATA[
-      {{ note.templateContent | htmlToAbsoluteUrls(absoluteNoteUrl) | safe }}
+      {{ shortByte.templateContent | htmlToAbsoluteUrls(absoluteShortByteUrl) | safe }}
     ]]></content>
   </entry>
   {%- endfor %}

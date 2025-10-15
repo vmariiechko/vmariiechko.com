@@ -88,9 +88,9 @@ module.exports = function (eleventyConfig) {
         return collectionApi.getFilteredByGlob('src/content/posts/**/*.md').filter(post => !post.data.draft);
     });
 
-    // Create a collection of notes (short bytes)
-    eleventyConfig.addCollection('notes', (collectionApi) => {
-        return collectionApi.getFilteredByGlob('src/content/notes/**/*.md').filter(note => !note.data.draft);
+    // Create a collection of short bytes
+    eleventyConfig.addCollection('shortBytes', (collectionApi) => {
+        return collectionApi.getFilteredByGlob('src/content/short-bytes/**/*.md').filter(shortByte => !shortByte.data.draft);
     });
 
     // Create a collection of items grouped by topic
