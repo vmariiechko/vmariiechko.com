@@ -1,5 +1,3 @@
-const theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
 const giscusAttributes = {
     src: 'https://giscus.app/client.js',
     'data-repo': 'vmariiechko/vmariiechko.com',
@@ -11,7 +9,7 @@ const giscusAttributes = {
     'data-reactions-enabled': '0',
     'data-emit-metadata': '0',
     'data-input-position': 'top',
-    'data-theme': theme === 'dark' ? 'dark' : 'light',
+    'data-theme': 'light', // Default to light, will be updated by theme.js
     'data-lang': 'en',
     crossorigin: 'anonymous',
     async: '',

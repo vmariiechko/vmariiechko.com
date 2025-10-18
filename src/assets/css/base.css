@@ -1,0 +1,87 @@
+@layer base {
+  html { color-scheme: light dark; }
+  body {
+    font-family: var(--ff-sans);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--text);
+    background: var(--bg);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--ff-serif);
+    color: var(--text);
+    letter-spacing: -0.005em;
+  }
+  h1 { font-size: var(--fs-h1); line-height: var(--lh-tight); margin-block: 1.2em 0.5em; }
+  h2 { font-size: var(--fs-h2); line-height: var(--lh-head); margin-block: 1.2em 0.6em; }
+  h3 { font-size: var(--fs-h3); line-height: 1.25; margin-block: 1em 0.5em; }
+  h4 { font-size: var(--fs-h4); line-height: 1.28; margin-block: 1em 0.5em; }
+  h5 { font-size: var(--fs-h5); line-height: 1.32; margin-block: 0.8em 0.4em; }
+  h6 { font-size: var(--fs-h6); line-height: 1.35; margin-block: 0.8em 0.4em; text-transform: none; }
+
+  p { margin-block: 0 var(--space-para); }
+  p + p { margin-block-start: var(--space-para); }
+
+  a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+  a:visited { color: var(--link-visited); }
+  a:hover { text-decoration-thickness: 2px; }
+
+  code, kbd, samp {
+    font-family: var(--ff-mono);
+    font-size: var(--fs-code);
+    background: var(--code-bg);
+    padding: 0.1em 0.3em;
+    border-radius: 0.25rem;
+    font-variant-ligatures: none;
+  }
+
+  pre code {
+    /* Keep Prism’s own code rules; only set the font */
+    font-family: var(--ff-mono);
+    font-size: var(--fs-code);
+    line-height: 1.55;
+  }
+
+  /*
+  The background and border are now applied to pre[class*="language-"]
+  in components.css to ensure all code blocks (including those without a
+  language that get a default class from Prism) are themed consistently.
+  */
+  pre {
+    padding: 1rem 1.25rem;
+    border-radius: 0.5rem;
+    overflow: auto;
+    margin-block: 1.2rem;
+  }
+
+  blockquote {
+    margin-block: 1.2em;
+    padding-inline: 1em;
+    border-left: 0.25em solid var(--accent);
+    color: var(--muted);
+  }
+
+  figcaption, .caption {
+    font-size: var(--fs-small);
+    color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--fs-small);
+  }
+  th, td { border-bottom: 1px solid var(--border); padding: 0.6rem 0.4rem; }
+  th { text-align: left; font-weight: 600; }
+
+  /* Focus styles */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}

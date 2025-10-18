@@ -1,0 +1,41 @@
+@layer components {
+  /* Remove background and padding from Prism's code elements to avoid conflicts */
+  code[class*="language-"] {
+    background: none;
+    padding: 0;
+  }
+
+  /* Apply our site's theme background to all Prism code blocks */
+  pre[class*="language-"] {
+    @apply bg-code-bg border border-border;
+  }
+
+  .tag-chip {
+    @apply inline-block bg-code-bg border border-border rounded-full px-3 py-1 text-sm font-medium text-muted;
+  }
+
+  /* Callout Styles */
+  .callout-info, .callout-success, .callout-warning {
+    @apply my-6 p-4 border-l-4 rounded-r-lg;
+  }
+  .callout-info {
+    @apply bg-sky-100 border-sky-500 text-sky-900 dark:bg-sky-900/30 dark:border-sky-500 dark:text-sky-200;
+  }
+  .callout-success {
+    @apply bg-emerald-100 border-emerald-500 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-500 dark:text-emerald-200;
+  }
+  .callout-warning {
+    @apply bg-amber-100 border-amber-500 text-amber-900 dark:bg-amber-900/30 dark:border-amber-500 dark:text-amber-200;
+  }
+
+  .copy-button {
+    @apply absolute top-2 right-2 px-2 py-1 text-xs rounded border border-border bg-code-bg text-muted hover:bg-border hover:text-text transition-colors;
+  }
+
+  .captioned-figure {
+    @apply my-6;
+  }
+  .captioned-figure figcaption {
+    @apply text-sm text-center text-muted mt-2;
+  }
+}

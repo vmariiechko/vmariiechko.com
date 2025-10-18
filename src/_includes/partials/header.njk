@@ -1,10 +1,19 @@
-<header class="flex justify-between items-center py-4">
-  <div>
-    <a href="/" class="text-xl font-bold" aria-label="{{ site.title }} - Home">VM</a>
+<header class="py-6">
+  <div class="container mx-auto px-4 flex justify-between items-center">
+    <a href="/" class="text-2xl font-bold text-text hover:text-link">
+      {{ site.title }}
+    </a>
+    <nav class="flex items-center space-x-6">
+      <a href="/writing/" class="text-muted hover:text-text">Writing</a>
+      <a href="/short-bytes/" class="text-muted hover:text-text">Short Bytes</a>
+      <a href="/about/" class="text-muted hover:text-text">About</a>
+
+      <div class="pl-4">
+        <select id="theme-selector" onchange="setTheme(this.value)" class="bg-code-bg border border-border rounded px-2 py-1 text-muted focus:outline-none focus:ring-2 focus:ring-accent">
+          <option value="dark">Dark</option>
+          <option value="light">Light</option>
+        </select>
+      </div>
+    </nav>
   </div>
-  <nav class="flex space-x-4">
-    <a href="/writing/" class="text-muted hover:text-text">Writing</a>
-    <a href="/short-bytes/" class="text-muted hover:text-text">Short Bytes</a>
-    <a href="/about/" class="text-muted hover:text-text">About</a>
-  </nav>
 </header>

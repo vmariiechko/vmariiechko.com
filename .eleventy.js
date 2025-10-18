@@ -2,6 +2,7 @@ const { DateTime } = require('luxon');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const pluginRss = require('@11ty/eleventy-plugin-rss');
 const markdownIt = require('markdown-it');
+const markdownItPrism = require('markdown-it-prism');
 const markdownItContainer = require('markdown-it-container');
 const Image = require('@11ty/eleventy-img');
 const path = require('path');
@@ -31,8 +32,10 @@ module.exports = function (eleventyConfig) {
 
     // Passthrough copy for static assets
     eleventyConfig.addPassthroughCopy({ 'src/static/favicons': 'favicons' });
+    eleventyConfig.addPassthroughCopy('src/assets/images');
     eleventyConfig.addPassthroughCopy('src/assets/fonts');
     eleventyConfig.addPassthroughCopy('src/assets/js');
+    eleventyConfig.addPassthroughCopy('src/assets/css/vendors');
     eleventyConfig.addPassthroughCopy('src/robots.txt');
     eleventyConfig.addPassthroughCopy('src/manifest.webmanifest');
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.jpg');
@@ -123,6 +126,9 @@ module.exports = function (eleventyConfig) {
     md.use(markdownItContainer, 'callout-info');
     md.use(markdownItContainer, 'callout-success');
     md.use(markdownItContainer, 'callout-warning');
+    md.use(markdownItPrism, {
+        defaultLanguage: "plaintext",
+    });
     eleventyConfig.setLibrary('md', md);
 
     return {

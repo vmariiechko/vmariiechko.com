@@ -1,0 +1,86 @@
+/* Inter Variable */
+@font-face {
+  font-family: "Inter";
+  src: url("/assets/fonts/inter-var.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Newsreader Variable */
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader-var.woff2") format("woff2-variations");
+  font-weight: 300 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* JetBrains Mono (static regular + bold) */
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/jetbrains-mono-regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/assets/fonts/jetbrains-mono-bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --ff-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --ff-serif: "Newsreader", "Iowan Old Style", "Times New Roman", Times, serif;
+  --ff-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+  /* Type scale */
+  --fs-h1: clamp(2rem, 1.6rem + 2.2vw, 3rem);
+  --fs-h2: clamp(1.625rem, 1.4rem + 1.4vw, 2.25rem);
+  --fs-h3: clamp(1.375rem, 1.25rem + 0.8vw, 1.75rem);
+  --fs-h4: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --fs-h5: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem);
+  --fs-h6: clamp(1rem, 0.95rem + 0.2vw, 1.125rem);
+  --fs-body: clamp(1.0625rem, 1rem + 0.3vw, 1.125rem);
+  --fs-small: clamp(0.9375rem, 0.9rem + 0.2vw, 1rem);
+  --fs-footnote: clamp(0.875rem, 0.85rem + 0.2vw, 0.9375rem);
+  --fs-code: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+
+  --lh-body: 1.6;
+  --lh-tight: 1.15;
+  --lh-head: 1.2;
+
+  --space-para: 0.75em;
+  --space-section: 1.6rem;
+
+  /* Metrics alignment to reduce CLS when swapping from system fonts */
+  font-synthesis-weight: none; /* avoid synthetic bold jumps */
+}
+
+/* Default to dark theme */
+:root {
+  /* Colors (dark, default) */
+  --bg: #0b0f13;
+  --text: #e5e7eb;
+  --muted: #a1a1aa;
+  --border: #23262b;
+  --link: #93c5fd;
+  --link-visited: #c4b5fd;
+  --accent: #38bdf8;
+  --code-bg: #0f141a;
+}
+
+[data-theme="light"] {
+  /* Colors (light) */
+  --bg: #ffffff;
+  --text: #111827;
+  --muted: #4b5563;
+  --border: #e5e7eb;
+  --link: #1d4ed8;
+  --link-visited: #6d28d9;
+  --accent: #0ea5e9;
+  --code-bg: #f6f7f9;
+}
