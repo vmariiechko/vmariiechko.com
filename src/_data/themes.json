@@ -1,0 +1,26 @@
+{
+  "light": {
+    "label": "Light",
+    "code": "one-light",
+    "giscus": "light",
+    "swatch": ["#fbfbfd", "#ffffff", "#2563eb"]
+  },
+  "dark": {
+    "label": "Dark",
+    "code": "darcula",
+    "giscus": "transparent_dark",
+    "swatch": ["#0b0f13", "#141922", "#6ab7ff"]
+  },
+  "light-blue": {
+    "label": "Blue / Slate (cool, editorial-tech)",
+    "code": "one-light",
+    "giscus": "light",
+    "swatch": ["#f7f9fc", "#ffffff", "#2563eb"]
+  },
+  "dark-blue": {
+    "label": "Blue / Slate (cool, editorial-tech)",
+    "code": "darcula",
+    "giscus": "transparent_dark",
+    "swatch": ["#0b0f13", "#141922", "#6ab7ff"]
+  }
+}

@@ -97,6 +97,13 @@ Start numbering with an offset:
 
 Inline `code`
 
+Long inline code to span into new line: `{"dev": "vadym_mariiechko", "test" "ssssssssssssssssssss"}`
+
+`trigger_pause_status `
+
+> Test: `schedule.pause_status: UNPAUSED`
+
+
 ### Indented code
 
     // Some comments
@@ -148,6 +155,15 @@ var foo = function (bar) {
 };
 
 console.log(foo(5));
+```
+
+**SQL:**
+```sql
+SELECT *
+FROM ports
+WHERE port_id IN ('123', '2134')
+ORDER BY timestamp
+LIMIT 10;
 ```
 
 ---

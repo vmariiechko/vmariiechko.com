@@ -6,11 +6,14 @@ const markdownItPrism = require('markdown-it-prism');
 const markdownItContainer = require('markdown-it-container');
 const Image = require('@11ty/eleventy-img');
 const path = require('path');
+const phosphor = require('eleventy-plugin-phosphoricons');
 
 const shortcodes = require('./_11ty/shortcodes.js');
 const filters = require('./_11ty/filters.js');
 
 module.exports = function (eleventyConfig) {
+    eleventyConfig.addGlobalData('NODE_ENV', process.env.NODE_ENV);
+
     // Don't process drafts in production
     if (process.env.NODE_ENV === 'production') {
         eleventyConfig.ignores.add('src/content/drafts/**/*.md');
@@ -19,6 +22,7 @@ module.exports = function (eleventyConfig) {
     // Plugins
     eleventyConfig.addPlugin(syntaxHighlight);
     eleventyConfig.addPlugin(pluginRss);
+    eleventyConfig.addPlugin(phosphor, { class: 'icon', size: 20 });
 
     // Register Shortcodes
     Object.keys(shortcodes).forEach((shortcodeName) => {

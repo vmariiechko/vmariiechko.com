@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "A personal website for Vadym Mariiechko",
   "main": ".eleventy.js",
+  "engines": {
+    "node": ">=20.18.1"
+  },
   "scripts": {
     "build:css": "postcss ./src/assets/css/main.css -o ./_site/css/style.css",
     "build:eleventy": "eleventy",
-    "build": "npm-run-all build:eleventy build:css",
+    "build": "cross-env NODE_ENV=production npm-run-all build:eleventy build:css",
     "postbuild": "pagefind --site _site",
     "dev:css": "postcss ./src/assets/css/main.css -o ./_site/css/style.css --watch",
     "dev:eleventy": "eleventy --serve",
-    "dev": "npm-run-all --parallel dev:*",
+    "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -29,6 +32,7 @@
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.2",
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
+    "eleventy-plugin-phosphoricons": "^1.3.0",
     "eslint": "^8.57.1",
     "husky": "^9.1.7",
     "markdown-it-container": "^4.0.0",

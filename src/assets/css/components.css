@@ -1,36 +1,140 @@
 @layer components {
+  /* Header / Navigation links */
+  .nav-link {
+    position:relative; text-decoration:none; color:var(--link); padding-block:.25rem;
+  }
+  .nav-link::after{
+    content:""; position:absolute; left:0; right:0; bottom:0; height:2px;
+    background:var(--link); transform:scaleX(0); transform-origin:center;
+    transition:transform .18s ease;
+  }
+  .nav-link:hover::after,.nav-link:focus-visible::after{ transform:scaleX(1); }
+  /* Active route */
+  .nav-link[aria-current="page"]::after{ transform:scaleX(1); }
+  .nav-link:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+
+  /* Prose / Content ink links */
+  .prose a:not([class]) {
+    text-decoration:none;
+    color:var(--link);
+    background:linear-gradient(currentColor,currentColor) left bottom/0 2px no-repeat;
+    transition:background-size .18s ease,color .15s ease;
+  }
+  .prose a:not([class]):hover, .prose a:not([class]):focus-visible { background-size:100% 2px; }
+  .prose a:not([class]):visited { color:var(--link); }
+
+  @media (min-width: 900px){
+    .prose table thead th { position: sticky; top: 0; background: var(--bg); }
+  }
+
   /* Remove background and padding from Prism's code elements to avoid conflicts */
   code[class*="language-"] {
     background: none;
     padding: 0;
   }
 
-  /* Apply our site's theme background to all Prism code blocks */
+  /* Apply border to all Prism code blocks */
   pre[class*="language-"] {
-    @apply bg-code-bg border border-border;
+    @apply border;
+    border-color: var(--border);
+  }
+
+  /* Theme Picker */
+  .theme-picker { position: relative; }
+  .theme-button { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px; cursor: pointer; background-color: transparent; border: none; color: var(--link); }
+  .theme-button:hover { color: var(--link); }
+  .theme-button .icon { width: 1.25rem; height: 1.25rem; }
+
+  /* Theme toggle ink ring hover */
+  @media (prefers-reduced-motion: no-preference) {
+    .theme-button { position: relative; overflow: visible; }
+    .theme-button .sun, .theme-button .moon { transition: transform .18s ease, opacity .18s ease; }
+  }
+
+  .theme-button::after{
+    content:""; position:absolute; inset:-2px; border-radius:9999px;
+    border:2px solid currentColor; transform:scale(.6); opacity:0;
+    transition:transform .18s ease, opacity .18s ease;
+  }
+  .theme-button:hover::after, .theme-button:focus-visible::after { transform:scale(1); opacity:1; }
+
+  /* Icon nudge on hover (tiny scale) */
+  .theme-button:hover .sun, .theme-button:hover .moon { transform: scale(1.16); }
+
+  .theme-menu {
+    position: absolute; right: 0; margin-top: .5rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: .75rem; padding: .5rem; display: flex; gap: .5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,.15);
+    z-index: 10;
+  }
+
+  .theme-chip {
+    width: 2.5rem; height: 2.5rem; border-radius: 9999px; border: 1px solid var(--border);
+    background: transparent; position: relative; cursor: pointer;
+    outline-offset: 2px;
+  }
+  .theme-chip[aria-checked="true"] { outline: 2px solid var(--accent); }
+
+  .chip-dots {
+    position: absolute; inset: 0; display: grid; place-content: center;
+    background:
+      radial-gradient(circle at 50% 50%, var(--c1) 55%, transparent 56%),
+      radial-gradient(circle at 50% 50%, var(--c2) 55%, transparent 56%),
+      radial-gradient(circle at 50% 50%, var(--c3) 55%, transparent 56%);
+    background-size: 45% 45%;
+    background-repeat: no-repeat;
+    background-position: 50% 15%, 15% 75%, 85% 75%;
   }
 
   .tag-chip {
-    @apply inline-block bg-code-bg border border-border rounded-full px-3 py-1 text-sm font-medium text-muted;
+    @apply inline-block rounded-full px-3 py-1 text-sm font-medium;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
   }
 
   /* Callout Styles */
   .callout-info, .callout-success, .callout-warning {
     @apply my-6 p-4 border-l-4 rounded-r-lg;
-  }
-  .callout-info {
-    @apply bg-sky-100 border-sky-500 text-sky-900 dark:bg-sky-900/30 dark:border-sky-500 dark:text-sky-200;
-  }
-  .callout-success {
-    @apply bg-emerald-100 border-emerald-500 text-emerald-900 dark:bg-emerald-900/30 dark:border-emerald-500 dark:text-emerald-200;
-  }
-  .callout-warning {
-    @apply bg-amber-100 border-amber-500 text-amber-900 dark:bg-amber-900/30 dark:border-amber-500 dark:text-amber-200;
+    color: var(--text);
   }
 
-  .copy-button {
-    @apply absolute top-2 right-2 px-2 py-1 text-xs rounded border border-border bg-code-bg text-muted hover:bg-border hover:text-text transition-colors;
+  .callout-info p, .callout-success p, .callout-warning p {
+    margin: 0;
   }
+
+  .callout-info {
+    --tint: var(--info);
+    border-color: var(--tint);
+    background-color: color-mix(in oklch, var(--tint) 12%, var(--surface));
+  }
+  .callout-success {
+    --tint: var(--ok);
+    border-color: var(--tint);
+    background-color: color-mix(in oklch, var(--tint) 12%, var(--surface));
+  }
+  .callout-warning {
+    --tint: var(--warn);
+    border-color: var(--tint);
+    background-color: color-mix(in oklch, var(--tint) 12%, var(--surface));
+  }
+  .callout-info strong, .callout-success strong, .callout-warning strong {
+    color: var(--text);
+  }
+
+  /* Floating copy button (top-right) */
+  .copy-button {
+    position: absolute; top: .5rem; right: .5rem; z-index: 2;
+    display: inline-flex; align-items: center; gap: .25rem;
+    padding: .15rem .5rem; border-radius: .375rem; font-size: .75rem;
+    background-color: var(--code-bg); color: var(--muted);
+    border: 1px solid var(--border);
+    opacity: 0; transition: opacity .18s ease, color .18s ease, border-color .18s ease;
+  }
+  pre:hover .copy-button, .copy-button:focus-visible { opacity: 1; }
+  .copy-button:hover { color: var(--text); border-color: var(--accent); }
+  .copy-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .captioned-figure {
     @apply my-6;

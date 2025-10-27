@@ -5,4 +5,5 @@
   .skip-link:focus {
     @apply not-sr-only absolute top-4 left-4 z-50 bg-bg text-text px-4 py-2 rounded-md;
   }
+  .skip-link:focus-visible { @apply not-sr-only absolute top-4 left-4 z-50 bg-bg text-text px-4 py-2 rounded-md; }
 }

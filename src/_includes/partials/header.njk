@@ -1,18 +1,46 @@
 <header class="py-6">
   <div class="container mx-auto px-4 flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold text-text hover:text-link">
+    <a href="/" class="text-2xl font-bold nav-link">
       {{ site.title }}
     </a>
     <nav class="flex items-center space-x-6">
-      <a href="/writing/" class="text-muted hover:text-text">Writing</a>
-      <a href="/short-bytes/" class="text-muted hover:text-text">Short Bytes</a>
-      <a href="/about/" class="text-muted hover:text-text">About</a>
+      <a href="/writing/" class="nav-link">Writing</a>
+      <a href="/short-bytes/" class="nav-link">Short Bytes</a>
+      <a href="/about/" class="nav-link">About</a>
 
-      <div class="pl-4">
-        <select id="theme-selector" onchange="setTheme(this.value)" class="bg-code-bg border border-border rounded px-2 py-1 text-muted focus:outline-none focus:ring-2 focus:ring-accent">
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
-        </select>
+      <div>
+        {% if NODE_ENV === 'development' %}
+          {# DEVELOPMENT: Show full theme picker for testing #}
+          <details class="theme-picker">
+            <summary class="theme-button" aria-label="Theme">
+              {% phicon "paint-brush-broad", weight="regular" %}
+            </summary>
+
+            <div class="theme-menu" role="menu" aria-label="Choose theme">
+              {% set choices = ["light","dark","light-blue","dark-blue"] %}
+
+              {% for name in choices %}
+                {% set theme = themes[name] %}
+                <button
+                  type="button"
+                  role="menuitemradio"
+                  aria-checked="false"
+                  class="theme-chip"
+                  data-theme-choice="{{ name }}"
+                  style="--c1: {{ theme.swatch[0] }}; --c2: {{ theme.swatch[1] }}; --c3: {{ theme.swatch[2] }};"
+                  onclick="setTheme('{{ name }}'); this.closest('details').open=false;">
+                  <span class="sr-only">{{ name | capitalize }}</span>
+                  <span aria-hidden="true" class="chip-dots"></span>
+                </button>
+              {% endfor %}
+            </div>
+          </details>
+        {% else %}
+          <button type="button" id="theme-toggle" class="theme-button" aria-label="Toggle theme">
+            <span class="sun">{% phicon "sun", weight="regular" %}</span>
+            <span class="moon" style="display: none;">{% phicon "moon", weight="regular" %}</span>
+          </button>
+        {% endif %}
       </div>
     </nav>
   </div>

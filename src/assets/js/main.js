@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     copyButton.className = 'copy-button';
     copyButton.textContent = 'Copy';
 
-    block.style.position = 'relative';
     block.appendChild(copyButton);
 
     copyButton.addEventListener('click', () => {

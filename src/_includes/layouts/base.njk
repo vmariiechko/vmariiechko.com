@@ -7,12 +7,15 @@
 
     {% include "partials/seo.njk" %}
 
+    <script>
+      window.THEME_CONFIG = {{ themes | dump | safe }};
+    </script>
+
     <link rel="stylesheet" href="/css/style.css" />
     <link id="code-theme" rel="stylesheet" href="/assets/css/vendors/prism-darcula.css">
 
     <!-- Preload Fonts -->
     <link rel="preload" href="/assets/fonts/inter-var.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/assets/fonts/newsreader-var.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="/assets/fonts/jetbrains-mono-regular.woff2" as="font" type="font/woff2" crossorigin>
 
     <!-- Favicon Guide: https://evilmartians.com/chronicles/how-to-favicon-in-2021-six-files-that-fit-most-needs -->

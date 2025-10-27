@@ -15,7 +15,7 @@ layout: layouts/base.njk
     {% for item in itemsByTopic %}
       <li class="border-b border-border pb-4">
         <h2 class="text-2xl font-bold">
-          <a href="{{ item.url }}" class="text-text hover:text-link">{{ item.data.title }}</a>
+          <a href="{{ item.url }}" class="nav-link">{{ item.data.title }}</a>
         </h2>
         <p class="text-sm text-muted mt-1">
           {{ item.date | readableDate }}

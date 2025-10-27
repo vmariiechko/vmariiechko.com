@@ -1,3 +1,12 @@
+function getGiscusTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'system';
+
+    if (savedTheme === 'system') {
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    return savedTheme === 'dark' ? 'transparent_dark' : 'light';
+}
+
 const giscusAttributes = {
     src: 'https://giscus.app/client.js',
     'data-repo': 'vmariiechko/vmariiechko.com',
@@ -9,7 +18,7 @@ const giscusAttributes = {
     'data-reactions-enabled': '0',
     'data-emit-metadata': '0',
     'data-input-position': 'top',
-    'data-theme': 'light', // Default to light, will be updated by theme.js
+    'data-theme': getGiscusTheme(),
     'data-lang': 'en',
     crossorigin: 'anonymous',
     async: '',

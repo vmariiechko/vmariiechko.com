@@ -2,7 +2,7 @@
   {%- for shortByte in collections.shortBytes | reverse -%}
     <li class="border-b pb-4">
       <h2 class="text-2xl font-bold">
-        <a href="{{ shortByte.url }}" class="text-text hover:text-link">{{ shortByte.data.title }}</a>
+        <a href="{{ shortByte.url }}" class="nav-link">{{ shortByte.data.title }}</a>
       </h2>
       <p class="text-sm text-muted mt-1">
         {{ shortByte.date | readableDate }}

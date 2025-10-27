@@ -1,17 +1,13 @@
+/*
+  This file contains all the color and font definitions for the site,
+  organized by theme using CSS custom properties (variables).
+*/
+
 /* Inter Variable */
 @font-face {
   font-family: "Inter";
   src: url("/assets/fonts/inter-var.woff2") format("woff2-variations");
   font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Newsreader Variable */
-@font-face {
-  font-family: "Newsreader";
-  src: url("/assets/fonts/newsreader-var.woff2") format("woff2-variations");
-  font-weight: 300 800;
   font-style: normal;
   font-display: swap;
 }
@@ -32,10 +28,11 @@
   font-display: swap;
 }
 
+
 :root {
-  --ff-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --ff-serif: "Newsreader", "Iowan Old Style", "Times New Roman", Times, serif;
-  --ff-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --ff-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  --ff-head: var(--ff-sans);
+  --ff-mono: 'JetBrains Mono', monospace;
 
   /* Type scale */
   --fs-h1: clamp(2rem, 1.6rem + 2.2vw, 3rem);
@@ -60,27 +57,65 @@
   font-synthesis-weight: none; /* avoid synthetic bold jumps */
 }
 
-/* Default to dark theme */
+/*
+  Default Theme: Dark
+*/
 :root {
-  /* Colors (dark, default) */
-  --bg: #0b0f13;
-  --text: #e5e7eb;
-  --muted: #a1a1aa;
-  --border: #23262b;
-  --link: #93c5fd;
-  --link-visited: #c4b5fd;
-  --accent: #38bdf8;
-  --code-bg: #0f141a;
+  --bg:#1b1b1f;
+  --surface: #20242a;
+  --text: #e4e9f2;
+  --muted: #a2abbc;
+  --border: #2b313a;
+
+  --accent:#6da8ff;
+  --accent-contrast:#0b0f14;
+
+  --link:#6da8ff;
+
+  --code-bg:#24262e;
+  --code-inline-bg:#30343b;
+  --code-inline-text:#e8ecf4;
+
+  /* Callouts */
+  --info: #60a5fa;
+  --warn: #f59e0b;
+  --ok:   #34d399;
+  --callout-text: var(--text);  /* override per theme if needed */
 }
 
-[data-theme="light"] {
-  /* Colors (light) */
-  --bg: #ffffff;
-  --text: #111827;
-  --muted: #4b5563;
-  --border: #e5e7eb;
-  --link: #1d4ed8;
-  --link-visited: #6d28d9;
-  --accent: #0ea5e9;
-  --code-bg: #f6f7f9;
+/*
+  Light Theme
+*/
+[data-theme="light"]{
+  --bg: #f5f8fb;
+  --surface: #ffffff;
+  --text: #0e1726;
+  --muted: #596273;
+  --border: #e2e8f0;
+
+  --accent: #2563eb;
+  --accent-contrast: #ffffff;
+
+  --link: #2450c7;
+
+  --code-bg: hsl(230, 1%, 98%);
+  --code-inline-bg:#eef2f7;
+  --code-inline-text:#0f172a;
+
+  --info: #2563eb;
+  --warn: #c2410c;
+  --ok:   #059669;
+  --callout-text: #0b1220;
+}
+
+/* Example Theme for testing */
+[data-theme="light-blue"] {
+  --bg:#f7f9fc; --surface:#ffffff; --text:#0f172a; --muted:#5f6b7a; --border:#e6eaf0;
+  --accent:#2563eb; --accent-contrast:#ffffff;
+  --link:#1e50da;
+}
+[data-theme="dark-blue"] {
+  --bg:#1b1b1f; --surface:#222229; --text:#e8eaf0; --muted:#adb3bf; --border:#2a2a30;
+  --accent:#6da8ff; --accent-contrast:#0f1115;
+  --link:#6da8ff;
 }
