@@ -1,15 +1,37 @@
-<ul class="space-y-4">
-  {%- for post in collections.posts | reverse -%}
-    <li class="border-b pb-4">
-      <h2 class="text-2xl font-bold">
-        <a href="{{ post.url }}" class="nav-link">{{ post.data.title }}</a>
-      </h2>
-      <p class="text-sm text-muted mt-1">
+{%- set posts = pagination.items -%}
+<ul class="space-y-6">
+{%- for post in posts -%}
+  <li class="pb-6">
+    <h2 class="text-2xl font-bold mb-2">
+      <a href="{{ post.url }}" class="nav-link">{{ post.data.title }}</a>
+    </h2>
+    <div class="flex items-center justify-between flex-wrap gap-x-4 gap-y-2 mb-2">
+      <p class="text-sm text-muted">
         {{ post.date | readableDate }}
       </p>
-      {% if post.data.description %}
-        <p class="mt-2">{{ post.data.description }}</p>
-      {% endif %}
-    </li>
-  {%- endfor -%}
+      {%- if post.data.topics or post.data.tags -%}
+      <div class="flex items-center gap-2 flex-wrap">
+        {%- set tagCount = 0 -%}
+        {%- if post.data.topics -%}
+          {%- for topic in post.data.topics | slice(0, 3) -%}
+            <span class="tag-chip-sm">{{ topic }}</span>
+            {%- set tagCount = tagCount + 1 -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if tagCount < 3 and post.data.tags -%}
+          {%- for tag in post.data.tags -%}
+            {%- if tag != "post" and tagCount < 3 -%}
+              <span class="tag-chip-sm">{{ tag }}</span>
+              {%- set tagCount = tagCount + 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+    {%- if post.data.description -%}
+    <p class="text-muted">{{ post.data.description }}</p>
+    {%- endif -%}
+  </li>
+{%- endfor -%}
 </ul>

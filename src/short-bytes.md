@@ -1,7 +1,11 @@
 ---
 layout: layouts/base.njk
 title: "Short Bytes"
-permalink: /short-bytes/
+permalink: /short-bytes/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber + 1 }}/{% endif %}
+pagination:
+  data: collections.shortBytes
+  size: 10
+  reverse: true
 ---
 
 <h1>Short Bytes</h1>
@@ -9,4 +13,8 @@ permalink: /short-bytes/
 
 <div class="mt-8">
   {% include "partials/short-bytes-list.njk" %}
+</div>
+
+<div class="mt-8">
+  {% include "partials/pagination.njk" %}
 </div>

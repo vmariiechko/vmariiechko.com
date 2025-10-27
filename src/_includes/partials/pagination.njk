@@ -1,0 +1,29 @@
+{% if pagination.href.previous or pagination.href.next %}
+<nav aria-label="Pagination" class="pagination-nav">
+  <div class="pagination-links">
+    {% if pagination.href.previous %}
+      <a href="{{ pagination.href.previous }}" rel="prev" class="pagination-link">
+        <span aria-hidden="true">←</span> Newer
+      </a>
+    {% else %}
+      <span class="pagination-link pagination-link-disabled" aria-disabled="true">
+        <span aria-hidden="true">←</span> Newer
+      </span>
+    {% endif %}
+
+    {% if pagination.href.next %}
+      <a href="{{ pagination.href.next }}" rel="next" class="pagination-link">
+        Older <span aria-hidden="true">→</span>
+      </a>
+    {% else %}
+      <span class="pagination-link pagination-link-disabled" aria-disabled="true">
+        Older <span aria-hidden="true">→</span>
+      </span>
+    {% endif %}
+  </div>
+
+  <p class="pagination-info text-sm text-muted">
+    Page {{ pagination.pageNumber + 1 }} of {{ pagination.hrefs | length }}
+  </p>
+</nav>
+{% endif %}

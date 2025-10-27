@@ -25,4 +25,9 @@ module.exports = {
     htmlDateString: (dateObj) => {
         return DateTime.fromJSDate(dateObj, { zone: "utc" }).toFormat("yyyy-LL-dd");
     },
+
+    // Concatenate two arrays
+    concat: (arr1, arr2) => {
+        return [...(arr1 || []), ...(arr2 || [])];
+    },
 };

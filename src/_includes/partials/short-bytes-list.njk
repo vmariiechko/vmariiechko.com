@@ -1,15 +1,37 @@
+{%- set items = pagination.items -%}
 <ul class="space-y-4">
-  {%- for shortByte in collections.shortBytes | reverse -%}
-    <li class="border-b pb-4">
-      <h2 class="text-2xl font-bold">
-        <a href="{{ shortByte.url }}" class="nav-link">{{ shortByte.data.title }}</a>
-      </h2>
-      <p class="text-sm text-muted mt-1">
+{%- for shortByte in items -%}
+  <li class="pb-4">
+    <h2 class="text-2xl font-bold mb-2">
+      <a href="{{ shortByte.url }}" class="nav-link">{{ shortByte.data.title }}</a>
+    </h2>
+    <div class="flex items-center justify-between flex-wrap gap-x-4 gap-y-2 mb-2">
+      <p class="text-sm text-muted">
         {{ shortByte.date | readableDate }}
       </p>
-      {% if shortByte.data.description %}
-        <p class="mt-2">{{ shortByte.data.description }}</p>
-      {% endif %}
-    </li>
-  {%- endfor -%}
+      {%- if shortByte.data.topics or shortByte.data.tags -%}
+      <div class="flex items-center gap-2 flex-wrap">
+        {%- set tagCount = 0 -%}
+        {%- if shortByte.data.topics -%}
+          {%- for topic in shortByte.data.topics | slice(0, 3) -%}
+            <span class="tag-chip-sm">{{ topic }}</span>
+            {%- set tagCount = tagCount + 1 -%}
+          {%- endfor -%}
+        {%- endif -%}
+        {%- if tagCount < 3 and shortByte.data.tags -%}
+          {%- for tag in shortByte.data.tags -%}
+            {%- if tag != "shortByte" and tagCount < 3 -%}
+              <span class="tag-chip-sm">{{ tag }}</span>
+              {%- set tagCount = tagCount + 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+      {%- endif -%}
+    </div>
+    {%- if shortByte.data.description -%}
+    <p class="text-muted">{{ shortByte.data.description }}</p>
+    {%- endif -%}
+  </li>
+{%- endfor -%}
 </ul>

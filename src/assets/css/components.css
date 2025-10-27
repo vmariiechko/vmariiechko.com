@@ -94,6 +94,13 @@
     color: var(--muted);
   }
 
+  .tag-chip-sm {
+    @apply inline-block rounded-full px-2 py-0.5 text-xs font-medium;
+    background-color: var(--code-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
   /* Callout Styles */
   .callout-info, .callout-success, .callout-warning {
     @apply my-6 p-4 border-l-4 rounded-r-lg;
@@ -142,4 +149,52 @@
   .captioned-figure figcaption {
     @apply text-sm text-center text-muted mt-2;
   }
+
+  /* Pagination */
+  .pagination-nav {
+    @apply mt-12 pt-6 border-t;
+    border-color: var(--border);
+  }
+  .pagination-links {
+    @apply flex justify-between items-center mb-3;
+  }
+  .pagination-link {
+    @apply inline-block px-4 py-2 font-medium;
+    position: relative;
+    text-decoration: none;
+    color: var(--link);
+    transition: color .15s ease;
+  }
+  .pagination-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--link);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform .18s ease;
+  }
+  .pagination-link:hover::after,
+  .pagination-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+  .pagination-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .pagination-link-disabled {
+    color: var(--muted);
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+  .pagination-link-disabled::after {
+    display: none;
+  }
+  .pagination-info {
+    @apply text-center;
+  }
+
 }

@@ -1,7 +1,11 @@
 ---
 layout: layouts/base.njk
 title: "Writing"
-permalink: /writing/
+permalink: /writing/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber + 1 }}/{% endif %}
+pagination:
+  data: collections.posts
+  size: 10
+  reverse: true
 ---
 
 <h1>Writing</h1>
@@ -13,4 +17,8 @@ permalink: /writing/
 
 <div class="mt-8">
   {% include "partials/posts-list.njk" %}
+</div>
+
+<div class="mt-8">
+  {% include "partials/pagination.njk" %}
 </div>
