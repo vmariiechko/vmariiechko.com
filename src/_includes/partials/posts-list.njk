@@ -13,14 +13,14 @@
       <div class="flex items-center gap-2 flex-wrap">
         {%- set tagCount = 0 -%}
         {%- if post.data.topics -%}
-          {%- for topic in post.data.topics | slice(0, 3) -%}
+          {%- for topic in post.data.topics | limit(3) -%}
             <span class="tag-chip-sm">{{ topic }}</span>
             {%- set tagCount = tagCount + 1 -%}
           {%- endfor -%}
         {%- endif -%}
         {%- if tagCount < 3 and post.data.tags -%}
           {%- for tag in post.data.tags -%}
-            {%- if tag != "post" and tagCount < 3 -%}
+            {%- if tag != "Post" and tagCount < 3 -%}
               <span class="tag-chip-sm">{{ tag }}</span>
               {%- set tagCount = tagCount + 1 -%}
             {%- endif -%}

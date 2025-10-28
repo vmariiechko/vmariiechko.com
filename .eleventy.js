@@ -90,6 +90,11 @@ module.exports = function (eleventyConfig) {
         );
     });
 
+    // Add a filter to limit an array
+    eleventyConfig.addFilter('limit', (array, limit) => {
+        return array.slice(0, limit);
+    });
+
     // Create a collection of posts
     eleventyConfig.addCollection('posts', (collectionApi) => {
         return collectionApi.getFilteredByGlob('src/content/posts/**/*.md').filter(post => !post.data.draft);
@@ -132,6 +137,13 @@ module.exports = function (eleventyConfig) {
     md.use(markdownItContainer, 'callout-warning');
     md.use(markdownItPrism, {
         defaultLanguage: "plaintext",
+        // Prevent prism from processing mermaid blocks
+        init: function(Prism) {
+            // Mermaid blocks should not be syntax highlighted
+            if (Prism.languages.mermaid) {
+                delete Prism.languages.mermaid;
+            }
+        }
     });
     eleventyConfig.setLibrary('md', md);
 

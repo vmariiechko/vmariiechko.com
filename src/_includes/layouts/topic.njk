@@ -17,12 +17,16 @@ layout: layouts/base.njk
         <h2 class="text-2xl font-bold">
           <a href="{{ item.url }}" class="nav-link">{{ item.data.title }}</a>
         </h2>
-        <p class="text-sm text-muted mt-1">
-          {{ item.date | readableDate }}
-          <span class="ml-2 px-2 py-1 text-xs rounded-full bg-code-bg border border-border">
-            {{ item.data.tags[0] | capitalize }}
-          </span>
-        </p>
+        <div class="flex items-center justify-between flex-wrap gap-x-4 gap-y-2 mb-2">
+          <p class="text-sm text-muted">
+            {{ item.date | readableDate }}
+          </p>
+          <div class="flex items-center gap-2 flex-wrap">
+            {%- for tag in item.data.tags | limit(3) -%}
+              <span class="tag-chip-sm">{{ tag }}</span>
+            {%- endfor -%}
+          </div>
+        </div>
         {% if item.data.description %}
           <p class="mt-2">{{ item.data.description }}</p>
         {% endif %}
