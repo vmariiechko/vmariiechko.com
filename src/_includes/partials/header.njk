@@ -8,40 +8,41 @@
       <a href="/short-bytes/" class="nav-link">Short Bytes</a>
       <a href="/about/" class="nav-link">About</a>
 
-      <div>
-        {% if NODE_ENV === 'development' %}
-          {# DEVELOPMENT: Show full theme picker for testing #}
-          <details class="theme-picker">
-            <summary class="theme-button" aria-label="Theme">
-              {% phicon "paint-brush-broad", weight="regular" %}
-            </summary>
+      <button type="button" id="search-toggle" class="theme-button" aria-label="Search">
+        <span class="search">{% phicon "magnifying-glass", weight="regular" %}</span>
+        {# {% phicon "magnifying-glass", weight="regular" %} #}
+      </button>
 
-            <div class="theme-menu" role="menu" aria-label="Choose theme">
-              {% set choices = ["light","dark","light-blue","dark-blue"] %}
+      <button type="button" id="theme-toggle" class="theme-button" aria-label="Toggle theme">
+        <span class="sun">{% phicon "sun", weight="regular" %}</span>
+        <span class="moon" style="display: none;">{% phicon "moon", weight="regular" %}</span>
+      </button>
 
-              {% for name in choices %}
-                {% set theme = themes[name] %}
-                <button
-                  type="button"
-                  role="menuitemradio"
-                  aria-checked="false"
-                  class="theme-chip"
-                  data-theme-choice="{{ name }}"
-                  style="--c1: {{ theme.swatch[0] }}; --c2: {{ theme.swatch[1] }}; --c3: {{ theme.swatch[2] }};"
-                  onclick="setTheme('{{ name }}'); this.closest('details').open=false;">
-                  <span class="sr-only">{{ name | capitalize }}</span>
-                  <span aria-hidden="true" class="chip-dots"></span>
-                </button>
-              {% endfor %}
-            </div>
-          </details>
-        {% else %}
-          <button type="button" id="theme-toggle" class="theme-button" aria-label="Toggle theme">
-            <span class="sun">{% phicon "sun", weight="regular" %}</span>
-            <span class="moon" style="display: none;">{% phicon "moon", weight="regular" %}</span>
-          </button>
-        {% endif %}
-      </div>
+      {% if NODE_ENV === 'development' %}
+        {# DEVELOPMENT: Show full theme picker for testing #}
+        <details class="theme-picker">
+          <summary class="theme-button" aria-label="Theme">
+            {% phicon "paint-brush-broad", weight="regular" %}
+          </summary>
+          <div class="theme-menu" role="menu" aria-label="Choose theme">
+            {% set choices = ["light","dark","light-blue","dark-blue"] %}
+            {% for name in choices %}
+              {% set theme = themes[name] %}
+              <button
+                type="button"
+                role="menuitemradio"
+                aria-checked="false"
+                class="theme-chip"
+                data-theme-choice="{{ name }}"
+                style="--c1: {{ theme.swatch[0] }}; --c2: {{ theme.swatch[1] }}; --c3: {{ theme.swatch[2] }};"
+                onclick="setTheme('{{ name }}'); this.closest('details').open=false;">
+                <span class="sr-only">{{ name | capitalize }}</span>
+                <span aria-hidden="true" class="chip-dots"></span>
+              </button>
+            {% endfor %}
+          </div>
+        </details>
+      {% endif %}
     </nav>
   </div>
 </header>

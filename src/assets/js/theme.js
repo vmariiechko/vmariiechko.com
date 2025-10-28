@@ -41,6 +41,11 @@ function applyTheme(themeName) {
     toggle.querySelector('.sun').style.display = isDark ? 'none' : 'block';
     toggle.querySelector('.moon').style.display = isDark ? 'block' : 'none';
   }
+
+  // Dispatch theme change event for external listeners (e.g., Mermaid)
+  window.dispatchEvent(new CustomEvent('themeChanged', {
+    detail: { theme: effectiveTheme }
+  }));
 }
 
 function getInitialTheme() {

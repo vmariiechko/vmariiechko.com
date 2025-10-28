@@ -31,39 +31,4 @@ layout: layouts/base.njk
 </article>
 
 {# Mermaid diagram support #}
-{# <script src="/assets/js/mermaid-support.js"></script> #}
-<script type="module">
-  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
-
-  // Convert language-mermaid code blocks to mermaid class
-  document.querySelectorAll('pre.language-mermaid, code.language-mermaid').forEach(el => {
-    const pre = el.tagName === 'PRE' ? el : el.parentElement;
-    const code = pre.querySelector('code') || el;
-
-    // Extract the text content (remove prism spans if any)
-    const mermaidCode = code.textContent;
-
-    // Replace the code block with a mermaid div
-    const mermaidDiv = document.createElement('div');
-    mermaidDiv.className = 'mermaid';
-    mermaidDiv.textContent = mermaidCode;
-    pre.replaceWith(mermaidDiv);
-  });
-
-  // Initialize mermaid with theme support
-  const currentTheme = document.documentElement.getAttribute('data-theme');
-  mermaid.initialize({
-    startOnLoad: true,
-    theme: currentTheme === 'light' || currentTheme === 'light-blue' ? 'default' : 'dark'
-  });
-
-  // Re-render mermaid diagrams when theme changes
-  window.addEventListener('themeChanged', (e) => {
-    const newTheme = e.detail.theme === 'light' || e.detail.theme === 'light-blue' ? 'default' : 'dark';
-    mermaid.initialize({ theme: newTheme });
-    document.querySelectorAll('.mermaid').forEach((el, index) => {
-      el.removeAttribute('data-processed');
-      mermaid.run({ nodes: [el] });
-    });
-  });
-</script>
+<script type="module" src="/assets/js/mermaid-support.js"></script>
