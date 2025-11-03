@@ -28,6 +28,11 @@
 
   p { margin-block: 0 var(--space-para); }
   p + p { margin-block-start: var(--space-para); }
+  p img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 
   a {
     color: var(--link);
@@ -94,6 +99,22 @@
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
+  }
+
+  /* Exception: no outline for heading anchors */
+  .heading-anchor:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* No outline on headings when navigated via anchor link */
+  h2[tabindex="-1"]:focus,
+  h3[tabindex="-1"]:focus,
+  h4[tabindex="-1"]:focus,
+  h2[tabindex="-1"]:focus-visible,
+  h3[tabindex="-1"]:focus-visible,
+  h4[tabindex="-1"]:focus-visible {
+    outline: none;
   }
 
   /* Numeric alignment to keep columns and timestamps from wiggling */

@@ -78,6 +78,12 @@ window.setTheme = setTheme;
 
 document.addEventListener("DOMContentLoaded", () => {
   const initial = getInitialTheme();
+
+  // Save to localStorage on first visit if not already saved
+  if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme", initial);
+  }
+
   applyTheme(initial);
 
   // Add listener for the toggle button

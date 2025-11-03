@@ -2,33 +2,94 @@
 layout: layouts/base.njk
 ---
 
-<article class="prose lg:prose-xl">
-  <header>
-    <h1>{{ title }}</h1>
-    <p class="text-sm text-muted">
-      Published on: <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
-      {% if readingTime %}
-        <span>&bull; {{ readingTime }} min read</span>
-      {% endif %}
-    </p>
-    {% if tags %}
-      <div class="flex flex-wrap gap-2 mt-4">
-        {% for tag in tags %}
-          {% if tag != 'Post' %}
-            <span class="tag-chip">{{ tag }}</span>
-          {% endif %}
-        {% endfor %}
+{%- set toc = content | extractToc -%}
+
+{# Break out of base container and create custom layout with sidebar #}
+<div class="post-layout">
+  <article class="prose lg:prose-xl post-content">
+    <header>
+      <h1>{{ title }}</h1>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted not-prose">
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "calendar", weight="regular", size=16 %}</span>
+          <span>Published</span>
+          <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+        </span>
+        {% if lastUpdated %}
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "calendar-check", weight="regular", size=16 %}</span>
+          <span>Updated</span>
+          <time datetime="{{ lastUpdated | htmlDateString }}">{{ lastUpdated | readableDate }}</time>
+        </span>
+        {% endif %}
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "clock", weight="regular", size=16 %}</span>
+          {%- set contentObj = { content: content, data: {} } -%}
+          {%- if readingTime -%}
+          <span>{{ readingTime }}</span>
+          {%- else -%}
+          <span>{{ contentObj | readingTime }}</span>
+          {%- endif -%}
+        </span>
       </div>
-    {% endif %}
-  </header>
+      {% if tags %}
+        <div class="flex flex-wrap gap-2 mt-4">
+          {% for tag in tags %}
+            {% if tag != 'Post' %}
+              <span class="tag-chip">{{ tag }}</span>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </header>
 
-  <div class="mt-8">
-    {{ content | safe }}
-  </div>
+    <div class="mt-8">
+      {{ content | safe }}
+    </div>
 
-  <div id="comments" class="mt-12"></div>
-  <script src="/assets/js/comments.js"></script>
-</article>
+    <div id="comments" class="mt-12"></div>
+    <script src="/assets/js/comments.js"></script>
+  </article>
+
+  {# Sticky Table of Contents (desktop only) #}
+  {% if toc.length > 0 %}
+  <aside class="post-sidebar" id="toc-sidebar">
+    {# Apply hidden state immediately to prevent animation flash #}
+    <script>
+      if (localStorage.getItem('tocHidden') === 'true') {
+        document.currentScript.parentElement.classList.add('toc-hidden');
+      }
+    </script>
+    <button type="button" class="toc-toggle" id="toc-toggle" aria-label="Hide table of contents" aria-expanded="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"/>
+      </svg>
+    </button>
+    <nav class="post-toc" aria-labelledby="toc-heading">
+      <h2 id="toc-heading" class="text-sm font-semibold mb-4">On this page</h2>
+      <ul class="toc-list text-sm space-y-2">
+        {% for item in toc %}
+        <li class="toc-item toc-level-{{ item.level }}">
+          <a href="#{{ item.id }}" class="toc-link text-muted hover:text-text transition-colors">
+            {{ item.text }}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
+    </nav>
+  </aside>
+
+  {# Show button - appears when ToC is hidden #}
+  <button type="button" class="toc-show-button" id="toc-show-button" aria-label="Show table of contents">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor">
+      <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/>
+    </svg>
+  </button>
+  {% endif %}
+</div>
 
 {# Mermaid diagram support #}
 <script type="module" src="/assets/js/mermaid-support.js"></script>
+
+{# ToC toggle functionality - no defer to prevent animation flash #}
+<script src="/assets/js/toc.js"></script>

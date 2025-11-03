@@ -402,3 +402,273 @@
     color: var(--muted) !important;
   }
 }
+
+/* Table of Contents */
+.toc-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.toc-item {
+  margin: 0;
+}
+
+/* Indent based on heading level */
+.toc-level-2 {
+  padding-left: 0;
+}
+
+.toc-level-3 {
+  padding-left: 1rem;
+}
+
+.toc-level-4 {
+  padding-left: 2rem;
+}
+
+.toc-link {
+  display: block;
+  padding: 0.25rem 0;
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  padding-left: 0.75rem;
+  margin-left: -0.75rem;
+  transition: all 0.15s ease;
+}
+
+.toc-level-2 .toc-link {
+  margin-left: 0;
+  padding-left: 0.5rem;
+}
+
+.toc-link:hover {
+  border-left-color: var(--accent);
+}
+
+/* Prevent visited link color change */
+.toc-link:visited {
+  color: var(--muted);
+}
+
+.toc-link:hover:visited {
+  color: var(--text);
+}
+
+/* Heading anchor links */
+.heading-wrapper {
+  display: block;
+  position: relative;
+}
+
+.heading-wrapper h2,
+.heading-wrapper h3,
+.heading-wrapper h4 {
+  margin: 0;
+  display: inline;
+}
+
+.heading-anchor {
+  text-decoration: none;
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  margin-left: 0.5rem;
+  outline: none !important;
+  cursor: pointer;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+.heading-anchor:hover {
+  color: var(--accent);
+  outline: none !important;
+}
+
+.heading-anchor:focus,
+.heading-anchor:focus-visible,
+.heading-anchor:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Make # match heading font size */
+.heading-wrapper h2 + .heading-anchor {
+  font-size: var(--fs-h2);
+}
+
+.heading-wrapper h3 + .heading-anchor {
+  font-size: var(--fs-h3);
+}
+
+.heading-wrapper h4 + .heading-anchor {
+  font-size: var(--fs-h4);
+}
+
+/* Hide the screen reader text */
+.heading-anchor .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.heading-wrapper:hover .heading-anchor,
+.heading-anchor:focus {
+  opacity: 1;
+}
+
+/* Scroll offset for fixed header */
+h2, h3, h4, h5, h6 {
+  scroll-margin-top: 6rem;
+}
+
+/* Post layout with sidebar */
+.post-layout {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.post-content {
+  max-width: 896px;
+  margin: 0 auto;
+}
+
+.post-sidebar {
+  display: none;
+}
+
+/* On wide screens (≥1280px), show sidebar on absolute right */
+@media (min-width: 1280px) {
+  .post-layout {
+    position: relative;
+  }
+
+  .post-content {
+    /* Center the content */
+    max-width: 896px;
+    margin: 0 auto;
+  }
+
+  .post-sidebar {
+    display: block;
+    position: fixed;
+    right: max(1rem, calc((100vw - 896px) / 2 - 280px));
+    top: 6rem;
+    width: 256px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  /* Hidden state */
+  .post-sidebar.toc-hidden {
+    transform: translateX(calc(100% + 2rem));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .post-toc {
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 1rem;
+
+    /* Subtle scrollbar styling */
+    scrollbar-width: thin;
+    scrollbar-color: var(--muted) transparent;
+  }
+
+  .post-toc::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .post-toc::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .post-toc::-webkit-scrollbar-thumb {
+    background: var(--muted);
+    border-radius: 2px;
+  }
+
+  .post-toc::-webkit-scrollbar-thumb:hover {
+    background: var(--text);
+  }
+
+  /* Toggle buttons for ToC */
+  .toc-toggle {
+    position: absolute;
+    top: 0.7rem;
+    right: -3rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem;
+    background: var(--surface, var(--bg));
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+  }
+
+  .toc-toggle:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .toc-toggle svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: transform 0.3s ease;
+  }
+
+  /* Hide the toggle when ToC is hidden */
+  .post-sidebar.toc-hidden .toc-toggle {
+    display: none;
+  }
+
+  /* Show button - appears when ToC is hidden */
+  .toc-show-button {
+    position: fixed;
+    top: 6rem;
+    right: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.5rem 0 0 0.5rem;
+    background: var(--surface, var(--bg));
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--muted);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    z-index: 40;
+  }
+
+  .toc-show-button:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+
+  .toc-show-button svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  /* Show the show-button only when ToC is hidden */
+  .post-sidebar.toc-hidden ~ .toc-show-button {
+    display: flex;
+  }
+}
+
+/* Hide show button on mobile (since ToC itself is hidden) */
+.toc-show-button {
+  display: none;
+}

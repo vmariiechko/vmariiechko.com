@@ -6,9 +6,16 @@
       <a href="{{ shortByte.url }}" class="nav-link">{{ shortByte.data.title }}</a>
     </h2>
     <div class="flex items-center justify-between flex-wrap gap-x-4 gap-y-2 mb-2">
-      <p class="text-sm text-muted">
-        {{ shortByte.date | readableDate }}
-      </p>
+      <div class="flex items-center gap-3 text-sm text-muted">
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "calendar", weight="regular", size=16 %}</span>
+          <time datetime="{{ shortByte.date | htmlDateString }}">{{ shortByte.date | readableDate }}</time>
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "clock", weight="regular", size=16 %}</span>
+          <span>{{ shortByte | readingTime }}</span>
+        </span>
+      </div>
       {%- if shortByte.data.topics or shortByte.data.tags -%}
       <div class="flex items-center gap-2 flex-wrap">
         {%- set tagCount = 0 -%}

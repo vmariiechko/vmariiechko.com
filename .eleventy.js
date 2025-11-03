@@ -1,9 +1,10 @@
-const { DateTime } = require('luxon');
 const syntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight');
 const pluginRss = require('@11ty/eleventy-plugin-rss');
 const markdownIt = require('markdown-it');
 const markdownItPrism = require('markdown-it-prism');
 const markdownItContainer = require('markdown-it-container');
+const markdownItAnchor = require('markdown-it-anchor');
+const markdownItTOC = require('markdown-it-table-of-contents');
 const Image = require('@11ty/eleventy-img');
 const path = require('path');
 const phosphor = require('eleventy-plugin-phosphoricons');
@@ -82,19 +83,6 @@ module.exports = function (eleventyConfig) {
         return imageShortcode(fullSrc, alt, caption, sizes);
     });
 
-
-    // Add a filter for readable dates
-    eleventyConfig.addFilter('readableDate', (dateObj) => {
-        return DateTime.fromJSDate(dateObj, { zone: 'utc' }).toFormat(
-            'dd LLL yyyy'
-        );
-    });
-
-    // Add a filter to limit an array
-    eleventyConfig.addFilter('limit', (array, limit) => {
-        return array.slice(0, limit);
-    });
-
     // Create a collection of posts
     eleventyConfig.addCollection('posts', (collectionApi) => {
         return collectionApi.getFilteredByGlob('src/content/posts/**/*.md').filter(post => !post.data.draft);
@@ -132,6 +120,27 @@ module.exports = function (eleventyConfig) {
         breaks: true,
         linkify: true,
     });
+
+    // Add anchor links to headings
+    md.use(markdownItAnchor, {
+        level: [2, 3, 4], // h2, h3, h4 only
+        permalink: markdownItAnchor.permalink.linkAfterHeader({
+            style: 'visually-hidden',
+            assistiveText: title => `Permalink to "${title}"`,
+            visuallyHiddenClass: 'sr-only',
+            wrapper: ['<div class="heading-wrapper">', '</div>'],
+            placement: 'after',
+            class: 'heading-anchor',
+        }),
+    });
+
+    // Add table of contents support
+    md.use(markdownItTOC, {
+        includeLevel: [2, 3, 4],
+        containerClass: 'toc',
+        listType: 'ul',
+    });
+
     md.use(markdownItContainer, 'callout-info');
     md.use(markdownItContainer, 'callout-success');
     md.use(markdownItContainer, 'callout-warning');
