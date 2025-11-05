@@ -43,20 +43,37 @@ function isPostLiked(postSlug) {
 
 /**
  * Track like event in Umami Analytics (if available)
+ * Implements retry mechanism to handle async script loading
  * @param {string} postSlug - The post identifier
  * @param {string} action - The action type ('like' or 'unlike')
  */
 function trackLikeEvent(postSlug, action) {
-  // Check if Umami is loaded (it's async, so may not be available immediately)
-  console.log('Umami loaded:', typeof window.umami !== 'undefined');
-  if (typeof window.umami !== 'undefined') {
-    console.log('Tracking like event for post:', postSlug, 'Action:', action);
-    window.umami.track('post_liked', {
-      slug: postSlug,
-      action: action,
-      timestamp: new Date().toISOString()
-    });
-  }
+  // Attempt to track, with retries if Umami hasn't loaded yet
+  const attemptTrack = (retriesLeft = 3, delay = 500) => {
+    console.log('Attempting to track like event:', postSlug, action);
+    console.log('Umami loaded:', typeof window.umami !== 'undefined');
+    console.log('Umami track function:', typeof window.umami.track === 'function');
+    if (typeof window.umami !== 'undefined' && typeof window.umami.track === 'function') {
+      console.log('Umami loaded and ready');
+      // Umami is loaded and ready
+      try {
+        window.umami.track('post_liked', {
+          slug: postSlug,
+          action: action,
+          timestamp: new Date().toISOString()
+        });
+      } catch (error) {
+        console.warn('Failed to track like event:', error);
+      }
+    } else if (retriesLeft > 0) {
+      // Umami not ready yet, retry after delay
+      setTimeout(() => attemptTrack(retriesLeft - 1, delay * 2), delay);
+    }
+    // If all retries exhausted and Umami still not available, silently fail
+    // (This is expected if user has ad blocker or DNT enabled)
+  };
+
+  attemptTrack();
 }
 
 /**
