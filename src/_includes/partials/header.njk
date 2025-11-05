@@ -9,20 +9,19 @@
       <a href="/about/" class="nav-link">About</a>
 
       <button type="button" id="search-toggle" class="theme-button" aria-label="Search">
-        <span class="search">{% phicon "magnifying-glass", weight="regular" %}</span>
-        {# {% phicon "magnifying-glass", weight="regular" %} #}
+        <span class="search">{% phicon "magnifying-glass", "regular" %}</span>
       </button>
 
       <button type="button" id="theme-toggle" class="theme-button" aria-label="Toggle theme">
-        <span class="sun">{% phicon "sun", weight="regular" %}</span>
-        <span class="moon" style="display: none;">{% phicon "moon", weight="regular" %}</span>
+        <span class="sun">{% phicon "sun", "regular" %}</span>
+        <span class="moon" style="display: none;">{% phicon "moon", "regular" %}</span>
       </button>
 
       {% if NODE_ENV === 'development' %}
         {# DEVELOPMENT: Show full theme picker for testing #}
         <details class="theme-picker">
           <summary class="theme-button" aria-label="Theme">
-            {% phicon "paint-brush-broad", weight="regular" %}
+            {% phicon "paint-brush-broad", "regular" %}
           </summary>
           <div class="theme-menu" role="menu" aria-label="Choose theme">
             {% set choices = ["light","dark","light-blue","dark-blue"] %}

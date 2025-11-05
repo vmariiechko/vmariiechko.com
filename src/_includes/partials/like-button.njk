@@ -20,13 +20,13 @@
     data-like-button
     data-post-slug="{{ slug or page.fileSlug }}"
     aria-pressed="false"
-    title="Like this post"
+    title="Like this content"
   >
     <span class="like-heart" aria-hidden="true">
-      <span class="heart-outline">{% phicon "heart", weight="regular" %}</span>
-      <span class="heart-filled">{% phicon "heart", weight="fill" %}</span>
+      <span class="heart-outline">{% phicon "heart", "regular" %}</span>
+      <span class="heart-filled">{% phicon "heart", "fill" %}</span>
     </span>
-    <span class="like-label">Like this post</span>
+    <span class="like-label">Like this content</span>
   </button>
   <p class="like-description">
     Your like helps me understand what content resonates with readers.

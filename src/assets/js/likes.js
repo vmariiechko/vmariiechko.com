@@ -3,7 +3,7 @@
  * Stores liked posts in localStorage and tracks engagement via Umami Analytics
  */
 
-const STORAGE_KEY = 'liked_posts';
+const STORAGE_KEY = 'liked_content';
 
 /**
  * Get all liked post slugs from localStorage
@@ -46,42 +46,40 @@ function isPostLiked(postSlug) {
  * Implements retry mechanism to handle async script loading
  * @param {string} postSlug - The post identifier
  * @param {string} action - The action type ('like' or 'unlike')
+ * @returns {Promise<boolean>} Resolves to true if tracking succeeded, false if failed
  */
 function trackLikeEvent(postSlug, action) {
-  // Attempt to track, with retries if Umami hasn't loaded yet
-  const attemptTrack = (retriesLeft = 3, delay = 500) => {
-    console.log(`[Likes] Attempt ${4 - retriesLeft}/3 - Track event:`, postSlug, action);
+  return new Promise((resolve) => {
+    // Attempt to track, with retries if Umami hasn't loaded yet
+    const attemptTrack = (retriesLeft = 3, delay = 100) => {
+      // Check if Umami is loaded and has the track function
+      const umamiLoaded = typeof window.umami !== 'undefined';
+      const umamiTrackAvailable = umamiLoaded && typeof window.umami.track === 'function';
 
-    // Check if Umami is loaded and has the track function
-    const umamiLoaded = typeof window.umami !== 'undefined';
-    const umamiTrackAvailable = umamiLoaded && typeof window.umami.track === 'function';
-
-    console.log('[Likes] Umami loaded:', umamiLoaded);
-    console.log('[Likes] Umami track function available:', umamiTrackAvailable);
-
-    if (umamiTrackAvailable) {
-      // Umami is loaded and ready
-      console.log('[Likes] ✓ Tracking event in Umami');
-      try {
-        window.umami.track('post_liked', {
-          slug: postSlug,
-          action: action,
-          timestamp: new Date().toISOString()
-        });
-      } catch (error) {
-        console.warn('[Likes] Failed to track like event:', error);
+      if (umamiTrackAvailable) {
+        // Umami is loaded and ready
+        try {
+          window.umami.track('content_liked', {
+            slug: postSlug,
+            action: action,
+            timestamp: new Date().toISOString()
+          });
+          resolve(true); // Tracking succeeded
+        } catch (error) {
+          console.warn('Failed to track like event:', error);
+          resolve(false); // Tracking failed
+        }
+      } else if (retriesLeft > 0) {
+        // Umami not ready yet, retry after delay
+        setTimeout(() => attemptTrack(retriesLeft - 1, delay), delay);
+      } else {
+        // All retries exhausted - likely ad blocker
+        resolve(false); // Tracking failed
       }
-    } else if (retriesLeft > 0) {
-      // Umami not ready yet, retry after delay
-      console.log(`[Likes] Umami not ready, retrying in ${delay}ms (${retriesLeft} retries left)`);
-      setTimeout(() => attemptTrack(retriesLeft - 1, delay), delay);
-    } else {
-      // All retries exhausted
-      console.log('[Likes] All retries exhausted. Umami not available (ad blocker or DNT)');
-    }
-  };
+    };
 
-  attemptTrack();
+    attemptTrack();
+  });
 }
 
 /**
@@ -95,16 +93,16 @@ function updateButtonState(button, liked) {
   if (liked) {
     // Post is liked - show filled heart (CSS handles icon swap via aria-pressed)
     button.setAttribute('aria-pressed', 'true');
-    button.setAttribute('title', 'Unlike this post');
+    button.setAttribute('title', 'Unlike this content');
     if (labelText) {
       labelText.textContent = 'Liked';
     }
   } else {
     // Post is not liked - show outline heart
     button.setAttribute('aria-pressed', 'false');
-    button.setAttribute('title', 'Like this post');
+    button.setAttribute('title', 'Like this content');
     if (labelText) {
-      labelText.textContent = 'Like this post';
+      labelText.textContent = 'Like this content';
     }
   }
 }
@@ -114,31 +112,55 @@ function updateButtonState(button, liked) {
  * @param {string} postSlug - The post identifier
  * @param {HTMLButtonElement} button - The like button element
  */
-function toggleLike(postSlug, button) {
+async function toggleLike(postSlug, button) {
   const likedPosts = getLikedPosts();
   const isLiked = likedPosts.includes(postSlug);
 
   if (isLiked) {
-    // Unlike: remove from array
-    const index = likedPosts.indexOf(postSlug);
-    if (index > -1) {
-      likedPosts.splice(index, 1);
-    }
-    saveLikedPosts(likedPosts);
-    updateButtonState(button, false);
-    trackLikeEvent(postSlug, 'unlike');
-  } else {
-    // Like: add to array
-    likedPosts.push(postSlug);
-    saveLikedPosts(likedPosts);
-    updateButtonState(button, true);
-    trackLikeEvent(postSlug, 'like');
+    // Unlike: track first, then remove from localStorage
+    const tracked = await trackLikeEvent(postSlug, 'unlike');
 
-    // Optional: Add subtle animation feedback
-    button.classList.add('like-animation');
-    setTimeout(() => {
-      button.classList.remove('like-animation');
-    }, 600);
+    if (tracked) {
+      const index = likedPosts.indexOf(postSlug);
+      if (index > -1) {
+        likedPosts.splice(index, 1);
+      }
+      saveLikedPosts(likedPosts);
+      updateButtonState(button, false);
+    } else {
+      // Tracking failed - show toast and don't unlike
+      if (typeof showToast === 'function') {
+        showToast(
+          'Unable to track your interaction.<br>Please disable your ad blocker to support the author with engagement metrics.',
+          'error',
+          6000
+        );
+      }
+    }
+  } else {
+    // Like: track first, then add to localStorage
+    const tracked = await trackLikeEvent(postSlug, 'like');
+
+    if (tracked) {
+      likedPosts.push(postSlug);
+      saveLikedPosts(likedPosts);
+      updateButtonState(button, true);
+
+      // Add subtle animation feedback
+      button.classList.add('like-animation');
+      setTimeout(() => {
+        button.classList.remove('like-animation');
+      }, 600);
+    } else {
+      // Tracking failed - show toast and don't save like
+      if (typeof showToast === 'function') {
+        showToast(
+          'Unable to track your interaction.<br>Please disable your ad blocker to support the author with engagement metrics.',
+          'error',
+          6000
+        );
+      }
+    }
   }
 }
 
