@@ -1,0 +1,33 @@
+{#
+  Like Button Partial
+
+  Displays a like button that:
+  - Stores liked state in localStorage
+  - Tracks likes via Umami Analytics
+  - Uses Phosphor heart icon
+  - Fully accessible with ARIA attributes
+
+  Usage: {% include "partials/like-button.njk" %}
+
+  Expects:
+  - page.fileSlug or slug variable in context
+#}
+
+<div class="like-button-container">
+  <button
+    type="button"
+    class="like-button"
+    data-like-button
+    data-post-slug="{{ slug or page.fileSlug }}"
+    aria-pressed="false"
+    title="Like this post"
+  >
+    <span class="like-heart" aria-hidden="true">
+      {% phicon "heart", weight="regular" %}
+    </span>
+    <span class="like-label">Like this post</span>
+  </button>
+  <p class="like-description">
+    Your like helps me understand what content resonates with readers.
+  </p>
+</div>

@@ -47,6 +47,11 @@ layout: layouts/base.njk
     {{ content | safe }}
   </div>
 
+  {# Like button - end of content, before comments #}
+  <div class="mt-12">
+    {% include "partials/like-button.njk" %}
+  </div>
+
     <div id="comments" class="mt-12"></div>
     <script src="/assets/js/comments.js"></script>
   </article>

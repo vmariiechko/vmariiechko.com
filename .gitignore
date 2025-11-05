@@ -323,3 +323,5 @@ _site/
 .DS_Store
 
 .vscode/
+
+.claude/

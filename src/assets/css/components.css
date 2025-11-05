@@ -672,3 +672,93 @@ h2, h3, h4, h5, h6 {
 .toc-show-button {
   display: none;
 }
+
+/* Like Button */
+.like-button-container {
+  @apply flex flex-col items-center gap-2 py-6;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.like-button {
+  @apply inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: visible;
+}
+
+.like-button:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.like-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.like-button:active {
+  transform: translateY(0);
+}
+
+/* Heart icon */
+.like-button .like-heart {
+  @apply inline-flex items-center justify-center;
+  color: var(--muted);
+  transition: color 0.2s ease, transform 0.3s ease;
+}
+
+.like-button:hover .like-heart {
+  color: var(--accent);
+}
+
+/* Liked state - filled heart with accent color */
+.like-button .like-heart.liked {
+  color: var(--accent);
+}
+
+/* Like animation - subtle bounce */
+@keyframes likeAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.like-button.like-animation .like-heart {
+  animation: likeAnimation 0.6s ease;
+}
+
+/* Description text */
+.like-description {
+  @apply text-sm text-center;
+  color: var(--muted);
+  margin: 0;
+  max-width: 32rem;
+}
+
+/* Adjust icon size within like button */
+.like-heart .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Accessibility: Ensure button state is clear */
+.like-button[aria-pressed="true"] {
+  background-color: color-mix(in oklch, var(--accent) 8%, var(--surface));
+  border-color: var(--accent);
+}
+
+.like-button[aria-pressed="true"] .like-label {
+  color: var(--text);
+}
