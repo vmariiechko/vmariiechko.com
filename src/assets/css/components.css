@@ -706,23 +706,48 @@ h2, h3, h4, h5, h6 {
   transform: translateY(0);
 }
 
-/* Heart icon */
+/* Heart icon - dual state (outline + filled) */
 .like-button .like-heart {
   @apply inline-flex items-center justify-center;
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Heart outline (default state) */
+.like-button .heart-outline {
+  @apply inline-flex items-center justify-center;
   color: var(--muted);
-  transition: color 0.2s ease, transform 0.3s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
+  opacity: 1;
 }
 
-.like-button:hover .like-heart {
-  color: var(--accent);
+/* Heart filled (liked state) - hidden by default */
+.like-button .heart-filled {
+  @apply inline-flex items-center justify-center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #ef4444; /* Red filled heart */
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-/* Liked state - filled heart with accent color */
-.like-button .like-heart.liked {
-  color: var(--accent);
+/* Hover state - show red outline */
+.like-button:hover .heart-outline {
+  color: #ef4444;
 }
 
-/* Like animation - subtle bounce */
+/* Liked state - swap icons */
+.like-button[aria-pressed="true"] .heart-outline {
+  opacity: 0;
+}
+
+.like-button[aria-pressed="true"] .heart-filled {
+  opacity: 1;
+}
+
+/* Like animation - subtle bounce on the filled heart */
 @keyframes likeAnimation {
   0% {
     transform: scale(1);
@@ -735,7 +760,7 @@ h2, h3, h4, h5, h6 {
   }
 }
 
-.like-button.like-animation .like-heart {
+.like-button.like-animation .heart-filled {
   animation: likeAnimation 0.6s ease;
 }
 
@@ -753,10 +778,10 @@ h2, h3, h4, h5, h6 {
   height: 1.25rem;
 }
 
-/* Accessibility: Ensure button state is clear */
+/* Accessibility: Subtle state change for liked button */
+/* Keep button styling minimal - focus on the heart */
 .like-button[aria-pressed="true"] {
-  background-color: color-mix(in oklch, var(--accent) 8%, var(--surface));
-  border-color: var(--accent);
+  border-color: color-mix(in srgb, #ef4444 40%, var(--border));
 }
 
 .like-button[aria-pressed="true"] .like-label {

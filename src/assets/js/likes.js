@@ -50,12 +50,18 @@ function isPostLiked(postSlug) {
 function trackLikeEvent(postSlug, action) {
   // Attempt to track, with retries if Umami hasn't loaded yet
   const attemptTrack = (retriesLeft = 3, delay = 500) => {
-    console.log('Attempting to track like event:', postSlug, action);
-    console.log('Umami loaded:', typeof window.umami !== 'undefined');
-    console.log('Umami track function:', typeof window.umami.track === 'function');
-    if (typeof window.umami !== 'undefined' && typeof window.umami.track === 'function') {
-      console.log('Umami loaded and ready');
+    console.log(`[Likes] Attempt ${4 - retriesLeft}/3 - Track event:`, postSlug, action);
+
+    // Check if Umami is loaded and has the track function
+    const umamiLoaded = typeof window.umami !== 'undefined';
+    const umamiTrackAvailable = umamiLoaded && typeof window.umami.track === 'function';
+
+    console.log('[Likes] Umami loaded:', umamiLoaded);
+    console.log('[Likes] Umami track function available:', umamiTrackAvailable);
+
+    if (umamiTrackAvailable) {
       // Umami is loaded and ready
+      console.log('[Likes] ✓ Tracking event in Umami');
       try {
         window.umami.track('post_liked', {
           slug: postSlug,
@@ -63,14 +69,16 @@ function trackLikeEvent(postSlug, action) {
           timestamp: new Date().toISOString()
         });
       } catch (error) {
-        console.warn('Failed to track like event:', error);
+        console.warn('[Likes] Failed to track like event:', error);
       }
     } else if (retriesLeft > 0) {
       // Umami not ready yet, retry after delay
-      setTimeout(() => attemptTrack(retriesLeft - 1, delay * 2), delay);
+      console.log(`[Likes] Umami not ready, retrying in ${delay}ms (${retriesLeft} retries left)`);
+      setTimeout(() => attemptTrack(retriesLeft - 1, delay), delay);
+    } else {
+      // All retries exhausted
+      console.log('[Likes] All retries exhausted. Umami not available (ad blocker or DNT)');
     }
-    // If all retries exhausted and Umami still not available, silently fail
-    // (This is expected if user has ad blocker or DNT enabled)
   };
 
   attemptTrack();
@@ -82,22 +90,17 @@ function trackLikeEvent(postSlug, action) {
  * @param {boolean} liked - Whether the post is liked
  */
 function updateButtonState(button, liked) {
-  const heartIcon = button.querySelector('.like-heart');
   const labelText = button.querySelector('.like-label');
 
   if (liked) {
-    // Post is liked - show filled heart
-    heartIcon.setAttribute('data-weight', 'fill');
-    heartIcon.classList.add('liked');
+    // Post is liked - show filled heart (CSS handles icon swap via aria-pressed)
     button.setAttribute('aria-pressed', 'true');
     button.setAttribute('title', 'Unlike this post');
     if (labelText) {
       labelText.textContent = 'Liked';
     }
   } else {
-    // Post is not liked - show regular heart
-    heartIcon.setAttribute('data-weight', 'regular');
-    heartIcon.classList.remove('liked');
+    // Post is not liked - show outline heart
     button.setAttribute('aria-pressed', 'false');
     button.setAttribute('title', 'Like this post');
     if (labelText) {
