@@ -11,6 +11,7 @@
 
   Expects:
   - page.fileSlug or slug variable in context
+  - getContentType filter from _11ty/filters.js
 #}
 
 <div class="like-button-container">
@@ -18,7 +19,8 @@
     type="button"
     class="like-button"
     data-like-button
-    data-post-slug="{{ slug or page.fileSlug }}"
+    data-content-slug="{{ slug or page.fileSlug }}"
+    data-content-type="{{ page.url | getContentType }}"
     aria-pressed="false"
     title="Like this content"
   >

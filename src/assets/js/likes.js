@@ -1,54 +1,57 @@
 /**
  * Like Button Functionality
- * Stores liked posts in localStorage and tracks engagement via Umami Analytics
+ * Stores liked content in localStorage and tracks engagement via Umami Analytics
+ * Supports both posts and short bytes
  */
 
 const STORAGE_KEY = 'liked_content';
 
 /**
- * Get all liked post slugs from localStorage
- * @returns {string[]} Array of liked post slugs
+ * Get all liked content slugs from localStorage
+ * @returns {string[]} Array of liked content slugs
  */
-function getLikedPosts() {
+function getLikedContent() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
-    console.error('Error reading liked posts from localStorage:', error);
+    console.error('Error reading liked content from localStorage:', error);
     return [];
   }
 }
 
 /**
- * Save liked posts to localStorage
- * @param {string[]} posts - Array of post slugs
+ * Save liked content to localStorage
+ * @param {string[]} content - Array of content slugs
  */
-function saveLikedPosts(posts) {
+function saveLikedContent(content) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(content));
   } catch (error) {
-    console.error('Error saving liked posts to localStorage:', error);
+    console.error('Error saving liked content to localStorage:', error);
   }
 }
 
 /**
- * Check if a post is liked
- * @param {string} postSlug - The post identifier
- * @returns {boolean} True if post is liked
+ * Check if a content is liked
+ * @param {string} contentSlug - The content identifier
+ * @returns {boolean} True if content is liked
  */
-function isPostLiked(postSlug) {
-  const likedPosts = getLikedPosts();
-  return likedPosts.includes(postSlug);
+function isContentLiked(contentSlug) {
+  const likedContent = getLikedContent();
+  return likedContent.includes(contentSlug);
 }
 
 /**
  * Track like event in Umami Analytics (if available)
  * Implements retry mechanism to handle async script loading
- * @param {string} postSlug - The post identifier
+ * Uses separate event names for cleaner analytics
+ * @param {string} contentSlug - The content identifier
+ * @param {string} contentType - The content type
  * @param {string} action - The action type ('like' or 'unlike')
  * @returns {Promise<boolean>} Resolves to true if tracking succeeded, false if failed
  */
-function trackLikeEvent(postSlug, action) {
+function trackLikeEvent(contentSlug, contentType, action) {
   return new Promise((resolve) => {
     // Attempt to track, with retries if Umami hasn't loaded yet
     const attemptTrack = (retriesLeft = 3, delay = 100) => {
@@ -59,10 +62,12 @@ function trackLikeEvent(postSlug, action) {
       if (umamiTrackAvailable) {
         // Umami is loaded and ready
         try {
-          window.umami.track('content_liked', {
-            slug: postSlug,
-            action: action,
-            timestamp: new Date().toISOString()
+          // Use separate event names for likes and unlikes
+          const eventName = action === 'like' ? 'content_liked' : 'content_unliked';
+
+          window.umami.track(eventName, {
+            slug: contentSlug,
+            type: contentType
           });
           resolve(true); // Tracking succeeded
         } catch (error) {
@@ -85,20 +90,20 @@ function trackLikeEvent(postSlug, action) {
 /**
  * Update the like button UI state
  * @param {HTMLButtonElement} button - The like button element
- * @param {boolean} liked - Whether the post is liked
+ * @param {boolean} liked - Whether the content is liked
  */
 function updateButtonState(button, liked) {
   const labelText = button.querySelector('.like-label');
 
   if (liked) {
-    // Post is liked - show filled heart (CSS handles icon swap via aria-pressed)
+    // Content is liked - show filled heart (CSS handles icon swap via aria-pressed)
     button.setAttribute('aria-pressed', 'true');
     button.setAttribute('title', 'Unlike this content');
     if (labelText) {
       labelText.textContent = 'Liked';
     }
   } else {
-    // Post is not liked - show outline heart
+    // Content is not liked - show outline heart
     button.setAttribute('aria-pressed', 'false');
     button.setAttribute('title', 'Like this content');
     if (labelText) {
@@ -108,24 +113,25 @@ function updateButtonState(button, liked) {
 }
 
 /**
- * Toggle like state for a post
- * @param {string} postSlug - The post identifier
+ * Toggle like state for a content
+ * @param {string} contentSlug - The content identifier
+ * @param {string} contentType - The content type
  * @param {HTMLButtonElement} button - The like button element
  */
-async function toggleLike(postSlug, button) {
-  const likedPosts = getLikedPosts();
-  const isLiked = likedPosts.includes(postSlug);
+async function toggleLike(contentSlug, contentType, button) {
+  const likedContent = getLikedContent();
+  const isLiked = likedContent.includes(contentSlug);
 
   if (isLiked) {
     // Unlike: track first, then remove from localStorage
-    const tracked = await trackLikeEvent(postSlug, 'unlike');
+    const tracked = await trackLikeEvent(contentSlug, contentType, 'unlike');
 
     if (tracked) {
-      const index = likedPosts.indexOf(postSlug);
+      const index = likedContent.indexOf(contentSlug);
       if (index > -1) {
-        likedPosts.splice(index, 1);
+        likedContent.splice(index, 1);
       }
-      saveLikedPosts(likedPosts);
+      saveLikedContent(likedContent);
       updateButtonState(button, false);
     } else {
       // Tracking failed - show toast and don't unlike
@@ -139,11 +145,11 @@ async function toggleLike(postSlug, button) {
     }
   } else {
     // Like: track first, then add to localStorage
-    const tracked = await trackLikeEvent(postSlug, 'like');
+    const tracked = await trackLikeEvent(contentSlug, contentType, 'like');
 
     if (tracked) {
-      likedPosts.push(postSlug);
-      saveLikedPosts(likedPosts);
+      likedContent.push(contentSlug);
+      saveLikedContent(likedContent);
       updateButtonState(button, true);
 
       // Add subtle animation feedback
@@ -171,20 +177,21 @@ function initializeLikes() {
   const likeButtons = document.querySelectorAll('[data-like-button]');
 
   likeButtons.forEach(button => {
-    const postSlug = button.getAttribute('data-post-slug');
+    const contentSlug = button.getAttribute('data-content-slug');
+    const contentType = button.getAttribute('data-content-type');
 
-    if (!postSlug) {
-      console.warn('Like button found without data-post-slug attribute');
+    if (!contentSlug) {
+      console.warn('Like button found without data-content-slug attribute');
       return;
     }
 
     // Set initial state based on localStorage
-    const isLiked = isPostLiked(postSlug);
+    const isLiked = isContentLiked(contentSlug);
     updateButtonState(button, isLiked);
 
     // Add click handler
     button.addEventListener('click', () => {
-      toggleLike(postSlug, button);
+      toggleLike(contentSlug, contentType, button);
     });
   });
 }

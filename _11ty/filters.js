@@ -87,4 +87,14 @@ module.exports = {
 
         return headings;
     },
+
+    // Detect content type from URL path
+    // @param {string} url - The URL to detect the content type from
+    // @returns {string} The content type: 'short-byte' or 'post'
+    getContentType: (url) => {
+        if (url.includes('/short-bytes/')) {
+            return 'short-byte';
+        }
+        return 'post';
+    },
 };
