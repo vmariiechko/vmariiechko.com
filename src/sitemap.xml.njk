@@ -12,4 +12,9 @@ eleventyExcludeFromCollections: true
       </url>
     {%- endif -%}
   {%- endfor -%}
+  {%- for tag in collections.allTags %}
+    <url>
+      <loc>{{ ('/tags/' + tag.slug + '/') | url | absoluteUrl(site.url) }}</loc>
+    </url>
+  {%- endfor -%}
 </urlset>

@@ -2,6 +2,8 @@
 layout: layouts/base.njk
 ---
 
+{% set itemsByTopic = collections.itemsByTopic[topic] | reverse %}
+
 <header>
   <h1>{{ title }}</h1>
   {% if description %}
@@ -10,27 +12,30 @@ layout: layouts/base.njk
 </header>
 
 <div class="mt-8">
-  <ul class="space-y-4">
-    {% set itemsByTopic = collections.itemsByTopic[topic] | reverse %}
+  {%- if itemsByTopic.length > 0 -%}
+  <ul class="not-prose space-y-6">
     {% for item in itemsByTopic %}
-      <li class="border-b border-border pb-4">
-        <h2 class="text-2xl font-bold">
-          <a href="{{ item.url }}" class="nav-link">{{ item.data.title }}</a>
-        </h2>
-        <div class="flex items-center justify-between flex-wrap gap-x-4 gap-y-2 mb-2">
-          <p class="text-sm text-muted">
-            {{ item.date | readableDate }}
-          </p>
-          <div class="flex items-center gap-2 flex-wrap">
-            {%- for tag in item.data.tags | limit(3) -%}
-              <span class="tag-chip-sm">{{ tag }}</span>
-            {%- endfor -%}
-          </div>
-        </div>
-        {% if item.data.description %}
-          <p class="mt-2">{{ item.data.description }}</p>
-        {% endif %}
-      </li>
-    {% endfor %}
+    <li class="pb-6 border-b border-border last:border-0">
+      <h2 class="text-2xl font-bold mb-2">
+        <a href="{{ item.url }}" class="nav-link">{{ item.data.title }}</a>
+      </h2>
+      <div class="flex items-center gap-3 text-sm text-muted mb-2">
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "calendar", "regular", size=16 %}</span>
+          <time datetime="{{ item.date | htmlDateString }}">{{ item.date | readableDate }}</time>
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "clock", "regular", size=16 %}</span>
+          <span>{{ item | readingTime }}</span>
+        </span>
+      </div>
+      {%- if item.data.description -%}
+      <p class="text-muted">{{ item.data.description }}</p>
+      {%- endif -%}
+    </li>
+    {%- endfor -%}
   </ul>
+  {%- else -%}
+  <p class="text-muted">No items found with this topic.</p>
+  {%- endif -%}
 </div>

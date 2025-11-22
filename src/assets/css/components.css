@@ -92,14 +92,16 @@
     @apply inline-block rounded-full px-3 py-1 text-sm font-medium;
     background-color: var(--code-bg);
     border: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--link);
+    text-decoration: none;
   }
 
   .tag-chip-sm {
     @apply inline-block rounded-full px-2 py-0.5 text-xs font-medium;
     background-color: var(--code-bg);
     border: 1px solid var(--border);
-    color: var(--muted);
+    color: var(--link);
+    text-decoration: none;
   }
 
   /* Callout Styles */

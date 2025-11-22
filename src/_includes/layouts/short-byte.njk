@@ -7,50 +7,57 @@ layout: layouts/base.njk
 {# Wrapper for relative positioning #}
 <div class="post-layout">
   <article class="prose lg:prose-xl post-content">
-  <header>
-    <h1>{{ title }}</h1>
-    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted not-prose">
-      <span class="flex items-center gap-1.5">
-        <span aria-hidden="true">{% phicon "calendar", "regular", size=16 %}</span>
-        <span>Published</span>
-        <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
-      </span>
-      {% if lastUpdated %}
-      <span class="flex items-center gap-1.5">
-        <span aria-hidden="true">{% phicon "calendar-check", "regular", size=16 %}</span>
-        <span>Updated</span>
-        <time datetime="{{ lastUpdated | htmlDateString }}">{{ lastUpdated | readableDate }}</time>
-      </span>
-      {% endif %}
-      <span class="flex items-center gap-1.5">
-        <span aria-hidden="true">{% phicon "clock", "regular", size=16 %}</span>
-        {%- set contentObj = { content: content, data: {} } -%}
-        {%- if readingTime -%}
-        <span>{{ readingTime }}</span>
-        {%- else -%}
-        <span>{{ contentObj | readingTime }}</span>
-        {%- endif -%}
-      </span>
-    </div>
-    {% if tags %}
-      <div class="flex flex-wrap gap-2 mt-4">
-        {% for tag in tags %}
-          {% if tag != 'Short Byte' %}
-            <span class="tag-chip">{{ tag }}</span>
-          {% endif %}
-        {% endfor %}
+    <header>
+      <h1>{{ title }}</h1>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted not-prose">
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "calendar", "regular", size=16 %}</span>
+          <span>Published</span>
+          <time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time>
+        </span>
+        {% if lastUpdated %}
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "calendar-check", "regular", size=16 %}</span>
+          <span>Updated</span>
+          <time datetime="{{ lastUpdated | htmlDateString }}">{{ lastUpdated | readableDate }}</time>
+        </span>
+        {% endif %}
+        <span class="flex items-center gap-1.5">
+          <span aria-hidden="true">{% phicon "clock", "regular", size=16 %}</span>
+          {%- set contentObj = { content: content, data: {} } -%}
+          {%- if readingTime -%}
+          <span>{{ readingTime }}</span>
+          {%- else -%}
+          <span>{{ contentObj | readingTime }}</span>
+          {%- endif -%}
+        </span>
       </div>
-    {% endif %}
-  </header>
+      {% if tags or topics %}
+        <div class="flex flex-wrap gap-2 mt-4">
+          {% if topics %}
+            {% for topic in topics %}
+              <a href="/topics/{{ topic | slugify }}/" class="tag-chip hover:border-accent transition-colors">{{ topic }}</a>
+            {% endfor %}
+          {% endif %}
+          {% if tags %}
+            {% for tag in tags %}
+              {% if tag != 'Short Byte' %}
+                <a href="/tags/{{ tag | slugify }}/" class="tag-chip hover:border-accent transition-colors">{{ tag }}</a>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
+    </header>
 
-  <div class="mt-8">
-    {{ content | safe }}
-  </div>
+    <div class="mt-8">
+      {{ content | safe }}
+    </div>
 
-  {# Like button - end of content, before comments #}
-  <div class="mt-12">
-    {% include "partials/like-button.njk" %}
-  </div>
+    {# Like button - end of content, before comments #}
+    <div class="mt-12">
+      {% include "partials/like-button.njk" %}
+    </div>
 
     <div id="comments" class="mt-12"></div>
     <script src="/assets/js/comments.js"></script>

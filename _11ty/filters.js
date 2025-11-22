@@ -97,4 +97,38 @@ module.exports = {
         }
         return 'post';
     },
+
+    // Convert string to URL-friendly slug (kebab-case lowercase)
+    // @param {string} str - The string to slugify
+    // @returns {string} Kebab-case lowercase slug
+    // Example: "Data Engineering" → "data-engineering"
+    slugify: (str) => {
+        if (typeof str !== 'string') {
+            return '';
+        }
+        return str
+            .toString()
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, '-')        // Replace spaces with -
+            .replace(/[^\w\-]+/g, '')    // Remove all non-word chars except -
+            .replace(/\-\-+/g, '-')      // Replace multiple - with single -
+            .replace(/^-+/, '')          // Trim - from start
+            .replace(/-+$/, '');         // Trim - from end
+    },
+
+    // Filter collection by tag (matches both tags and topics fields)
+    // @param {Array} collection - Collection of items to filter
+    // @param {string} tagName - Tag name to filter by
+    // @returns {Array} Filtered items that have the tag
+    filterTagList: (collection, tagName) => {
+        return collection.filter((item) => {
+            if (item.data.draft) return false;
+
+            const tags = item.data.tags || [];
+            const topics = item.data.topics || [];
+
+            return tags.includes(tagName) || topics.includes(tagName);
+        }).sort((a, b) => b.date - a.date);
+    },
 };

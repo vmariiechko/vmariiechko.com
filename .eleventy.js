@@ -47,6 +47,7 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.png');
 
     // Asynchronous image shortcode
+    // TODO: Move this to shortcodes.js
     async function imageShortcode(src, alt, caption, sizes = '100vw') {
         if (!alt) {
             throw new Error(`Missing \`alt\` on image shortcode from: ${src}`);
@@ -112,6 +113,53 @@ module.exports = function (eleventyConfig) {
     // Create a collection of drafts
     eleventyConfig.addCollection('drafts', (collectionApi) => {
         return collectionApi.getFilteredByGlob('src/content/drafts/**/*.md');
+    });
+
+    // Create a collection of all tags (deduplicated, with types, slugs, and counts, alphabetical)
+    eleventyConfig.addCollection('allTags', (collectionApi) => {
+        const tagItems = {};
+        const excludedTags = ['Post', 'Short Byte'];
+
+        const items = [
+            ...collectionApi.getFilteredByGlob('src/content/posts/**/*.md'),
+            ...collectionApi.getFilteredByGlob('src/content/short-bytes/**/*.md')
+        ];
+
+        items.forEach((item) => {
+            if (item.data.draft) return; // Skip drafts
+
+            if (item.data.tags && Array.isArray(item.data.tags)) {
+                item.data.tags.forEach((tag) => {
+                    if (!excludedTags.includes(tag)) {
+                        tagItems[tag] = {
+                            type: 'tag',
+                            slug: filters.slugify(tag),
+                            count: (tagItems[tag]?.count || 0) + 1,
+                        };
+                    }
+                });
+            }
+
+            // Topics are also tags in our taxonomy
+            if (item.data.topics && Array.isArray(item.data.topics)) {
+                item.data.topics.forEach((topic) => {
+                    tagItems[topic] = {
+                        type: 'topic',
+                        slug: filters.slugify(topic),
+                        count: (tagItems[topic]?.count || 0) + 1,
+                    };
+                });
+            }
+        });
+
+        return Object.keys(tagItems)
+            .sort((a, b) => a.localeCompare(b))
+            .map((tag) => ({
+                name: tag,
+                type: tagItems[tag].type,
+                slug: tagItems[tag].slug,
+                count: tagItems[tag].count,
+            }));
     });
 
     // Configure markdown-it

@@ -1,0 +1,33 @@
+---
+layout: layouts/base.njk
+title: "All Tags"
+description: "Browse all topics and tags used across posts and short bytes."
+permalink: /tags/
+eleventyExcludeFromCollections: true
+---
+
+<article class="prose lg:prose-xl mx-auto">
+  <header>
+    <h1>{{ title }}</h1>
+    <p class="text-muted">{{ description }}</p>
+  </header>
+
+  <div class="mt-8">
+    {%- if collections.allTags.length > 0 -%}
+    <div class="not-prose flex flex-wrap gap-2.5">
+      {%- for tag in collections.allTags -%}
+      <a href="/{{ tag.type }}s/{{ tag.slug }}/" class="inline-flex items-center gap-2 px-3.5 py-1.5 text-sm no-underline border border-border rounded-full hover:border-accent hover:scale-105 transition-all group">
+        <span class="font-medium group-hover:text-accent transition-colors">
+          {{ tag.name }}
+        </span>
+        <span class="inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1.5 rounded-full bg-code-bg text-xs font-medium text-muted">
+          {{ tag.count }}
+        </span>
+      </a>
+      {%- endfor -%}
+    </div>
+    {%- else -%}
+    <p class="text-muted">No tags found.</p>
+    {%- endif -%}
+  </div>
+</article>
