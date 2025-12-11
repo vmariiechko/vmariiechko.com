@@ -1,4 +1,80 @@
 @layer components {
+  /* Social Links (footer) */
+  .social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    text-decoration: none;
+    color: var(--link);
+    padding-block: 0.25rem;
+    transition: color 0.15s ease;
+  }
+
+  .social-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: var(--link);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.18s ease;
+  }
+
+  .social-link:hover::after,
+  .social-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .social-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .social-icon .icon {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  /* .social-text {
+    Visible by default
+  } */
+
+  /* On small screens, hide text and show icons only */
+  @media (max-width: 639px) {
+    .social-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border-width: 0;
+    }
+
+    .social-link::after {
+      /* Disable underline on mobile (icons-only) */
+      display: none;
+    }
+
+    .social-icon .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+  }
+
   /* Header / Navigation links */
   .nav-link {
     position:relative; text-decoration:none; color:var(--link); padding-block:.25rem;

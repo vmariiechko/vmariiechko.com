@@ -18,9 +18,24 @@
     <div>
       <h3 class="font-bold">Connect</h3>
       <ul class="mt-2 space-y-1">
-        <li><a href="https://github.com/vmariiechko" class="nav-link" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        <li><a href="https://www.linkedin.com/in/mariiechko/" class="nav-link" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-        <li><a href="mailto:{{ site.author.email }}" class="nav-link">Email</a></li>
+        <li>
+          <a href="https://github.com/vmariiechko" class="social-link" target="_blank" rel="noopener noreferrer">
+            <span class="social-icon" aria-hidden="true">{% phicon "github-logo", "regular" %}</span>
+            <span class="social-text">GitHub</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.linkedin.com/in/mariiechko/" class="social-link" target="_blank" rel="noopener noreferrer">
+            <span class="social-icon" aria-hidden="true">{% phicon "linkedin-logo", "regular" %}</span>
+            <span class="social-text">LinkedIn</span>
+          </a>
+        </li>
+        <li>
+          <a href="mailto:{{ site.author.email }}" class="social-link">
+            <span class="social-icon" aria-hidden="true">{% phicon "envelope", "regular" %}</span>
+            <span class="social-text">Email</span>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
