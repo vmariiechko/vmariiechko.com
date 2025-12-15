@@ -1,0 +1,79 @@
+---
+layout: layouts/base.njk
+title: Home
+---
+
+{# Hero Section #}
+<section class="mb-12">
+  <h1 class="">Hey 👋 I'm Vadym</h1>
+  <p class="text-xl text-muted mb-4">
+    Data Engineer exploring how to work smarter with data and sharing what actually works.
+  </p>
+  <a href="/about/" class="nav-link text-muted italic">More on About</a>
+</section>
+
+{# Featured Section #}
+<section class="mb-12">
+  <h2>Featured</h2>
+  <ul class="space-y-4">
+    {%- for postUrl in featured.posts -%}
+      {%- for post in collections.allContent -%}
+        {%- if post.url == postUrl -%}
+        <li class="flex items-start gap-3">
+          <div class="flex-1">
+            <div class="flex items-baseline gap-2">
+              <a href="{{ post.url }}" class="nav-link text-2xl font-bold">{{ post.data.title }}</a>
+              <span class="text-lg text-muted flex-shrink-0">{{ post | readingTime }}</span>
+            </div>
+            {%- if post.data.description -%}
+            <p class="text-lg text-muted mt-1">{{ post.data.description }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+  </ul>
+</section>
+
+{# Latest Section #}
+<section class="mb-12">
+  <h2>Latest</h2>
+  <ul class="space-y-5">
+    {%- for item in collections.allContent | limit(6) -%}
+      {%- if item.url not in featured.posts -%}
+      <li class="pb-5">
+        <div class="flex items-start gap-3">
+          <span class="text-muted flex-shrink-0 mt-1" aria-hidden="true" title="{{ 'Short Byte' if item.data.contentType == 'short-byte' else 'Post' }}">
+            {%- if item.data.contentType == 'short-byte' -%}
+              {% phicon "lightning", "regular", size=20 %}
+            {%- else -%}
+              {% phicon "notebook", "regular", size=20 %}
+            {%- endif -%}
+          </span>
+          <div class="flex-grow min-w-0">
+            <a href="{{ item.url }}" class="nav-link text-2xl font-bold">{{ item.data.title }}</a>
+            <div class="flex items-center justify-between flex-wrap gap-x-4 gap-y-1 mt-1">
+              <div class="flex items-center gap-3 text-lg text-muted">
+                <span class="flex items-center gap-1.5">
+                  <span aria-hidden="true">{% phicon "calendar", "regular", size=20 %}</span>
+                  <time datetime="{{ item.date | htmlDateString }}">{{ item.date | formatDate("LLL d") }}</time>
+                </span>
+                <span class="flex items-center gap-1.5 text-lg">
+                  <span aria-hidden="true">{% phicon "clock", "regular", size=20 %}</span>
+                  <span>{{ item | readingTime }}</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      {%- endif -%}
+    {%- endfor -%}
+  </ul>
+
+  <div class="flex items-center gap-6 mt-4 text-sm">
+    <a href="/writing/" class="nav-link text-muted">See all writing</a>
+    <a href="/short-bytes/" class="nav-link text-muted">See all short bytes</a>
+  </div>
+</section>

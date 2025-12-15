@@ -86,12 +86,14 @@ module.exports = function (eleventyConfig) {
 
     // Create a collection of posts
     eleventyConfig.addCollection('posts', (collectionApi) => {
-        return collectionApi.getFilteredByGlob('src/content/posts/**/*.md').filter(post => !post.data.draft);
+        return collectionApi.getFilteredByGlob('src/content/posts/**/*.md')
+                .filter(post => !post.data.draft);
     });
 
     // Create a collection of short bytes
     eleventyConfig.addCollection('shortBytes', (collectionApi) => {
-        return collectionApi.getFilteredByGlob('src/content/short-bytes/**/*.md').filter(shortByte => !shortByte.data.draft);
+        return collectionApi.getFilteredByGlob('src/content/short-bytes/**/*.md')
+                .filter(shortByte => !shortByte.data.draft);
     });
 
     // Create a collection of items grouped by topic
@@ -113,6 +115,22 @@ module.exports = function (eleventyConfig) {
     // Create a collection of drafts
     eleventyConfig.addCollection('drafts', (collectionApi) => {
         return collectionApi.getFilteredByGlob('src/content/drafts/**/*.md');
+    });
+
+    // Create a collection of all content (posts + short bytes combined, sorted by date descending)
+    eleventyConfig.addCollection('allContent', (collectionApi) => {
+        const posts = collectionApi.getFilteredByGlob('src/content/posts/**/*.md')
+            .filter(item => !item.data.draft);
+
+        const shortBytes = collectionApi.getFilteredByGlob('src/content/short-bytes/**/*.md')
+            .filter(item => !item.data.draft);
+
+        // Add contentType to each item's data (avoids spread operator issues)
+        posts.forEach(item => { item.data.contentType = 'post'; });
+        shortBytes.forEach(item => { item.data.contentType = 'short-byte'; });
+
+        return [...posts, ...shortBytes]
+            .sort((a, b) => b.date - a.date);
     });
 
     // Create a collection of all tags (deduplicated, with types, slugs, and counts, alphabetical)
