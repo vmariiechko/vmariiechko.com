@@ -41,6 +41,12 @@ module.exports = {
             '--tw-prose-pre-bg': 'var(--code-inline-bg)',
             '--tw-prose-th-borders': 'var(--border)',
             '--tw-prose-td-borders': 'var(--border)',
+            'code::before': {
+              content: '""',
+            },
+            'code::after': {
+              content: '""',
+            },
           },
         },
       }),
