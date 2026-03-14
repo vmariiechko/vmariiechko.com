@@ -965,3 +965,56 @@ h2, h3, h4, h5, h6 {
   border-color: color-mix(in srgb, #ef4444 30%, var(--border));
   background: color-mix(in srgb, #ef4444 5%, var(--surface));
 }
+
+/* ─── About Page ─── */
+
+.about-content {
+  overflow: hidden; /* clearfix for floated photo */
+}
+
+.about-content p {
+  margin-bottom: 1rem;
+}
+
+.about-photo {
+  float: right;
+  margin: 0.25rem 0 1rem 1.5rem;
+  max-width: 200px;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 2px solid var(--border);
+}
+
+.about-photo picture,
+.about-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+@media (max-width: 639px) {
+  .about-photo {
+    float: none;
+    width: fit-content;
+    margin: 0 auto 1.5rem;
+    max-width: 160px;
+  }
+}
+
+.about-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0 1.5rem;
+}
+
+.about-ai-note h2 {
+  font-size: var(--fs-small);
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.about-ai-note p {
+  color: var(--muted);
+  font-size: var(--fs-small);
+}

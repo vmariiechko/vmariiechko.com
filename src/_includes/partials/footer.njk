@@ -31,7 +31,7 @@
           </a>
         </li>
         <li>
-          <a href="mailto:{{ site.author.email }}" class="social-link">
+          <a href="mailto:{{ site.author.email }}" class="social-link" data-user="vmariiechko" data-domain="gmail.com">
             <span class="social-icon" aria-hidden="true">{% phicon "envelope", "regular" %}</span>
             <span class="social-text">Email</span>
           </a>
@@ -42,4 +42,9 @@
   <div class="mt-8 text-center">
     <p>&copy; {% year %} {{ site.author.name }}. All rights reserved.</p>
   </div>
+  <script>
+    document.querySelectorAll('a[data-user][data-domain]').forEach(function(el) {
+      el.href = 'mailto:' + el.dataset.user + '@' + el.dataset.domain;
+    });
+  </script>
 </footer>
