@@ -980,7 +980,7 @@ h2, h3, h4, h5, h6 {
   float: right;
   margin: 0.25rem 0 1rem 1.5rem;
   max-width: 200px;
-  border-radius: 0.75rem;
+  border-radius: 9999px;
   overflow: hidden;
   border: 2px solid var(--border);
 }
@@ -1017,4 +1017,135 @@ h2, h3, h4, h5, h6 {
 .about-ai-note p {
   color: var(--muted);
   font-size: var(--fs-small);
+}
+
+/* ─── Home Hero ─── */
+
+@media (min-width: 640px) {
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+.hero-avatar {
+  flex-shrink: 0;
+  width: 190px;
+}
+
+.hero-avatar img {
+  width: 100%;
+  height: auto;
+}
+
+/* Default (dark): show dark variant, hide light */
+img.hero-avatar-dark { display: block; }
+img.hero-avatar-light { display: none; }
+
+/* Light themes: swap variants */
+[data-theme="light"] img.hero-avatar-dark,
+[data-theme="light-blue"] img.hero-avatar-dark { display: none; }
+[data-theme="light"] img.hero-avatar-light,
+[data-theme="light-blue"] img.hero-avatar-light { display: block; }
+
+@media (max-width: 639px) {
+  .hero-avatar {
+    width: 100px;
+    margin: 0 auto 1.5rem;
+  }
+}
+
+.hero-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ─── Brick Easter Egg ─── */
+
+/* Body as positioning root so absolute brick-field anchors to document bottom */
+body {
+  position: relative;
+}
+
+/* Site container (includes footer) always above bricks */
+.container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Outer page wrapper: flex column so footer is always pushed to viewport bottom */
+.page-layout {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Gravity-stack field: zero-height anchor at document bottom, bricks grow upward */
+.brick-field {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Individual brick: starts invisible, animates on scroll-discover */
+.brick {
+  position: absolute;
+  width: 40px;
+  height: 37px;
+  background-image: url('/assets/images/brick-dark.webp');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0;
+}
+
+/* Milestone brick: every 10th item — blue accent, pops above neighbors */
+.brick-milestone {
+  background-image: url('/assets/images/brick-milestone.webp');
+  z-index: 2;
+}
+
+/* Light themes: swap dark → light variant */
+[data-theme="light"] .brick,
+[data-theme="light-blue"] .brick {
+  background-image: url('/assets/images/brick-light.webp');
+}
+
+/* Milestone stays blue in light themes — must follow the swap above (same specificity, later wins) */
+[data-theme="light"] .brick-milestone,
+[data-theme="light-blue"] .brick-milestone {
+  background-image: url('/assets/images/brick-milestone.webp');
+}
+
+/* Settle: triggered when .visible class added by JS on scroll-to-footer */
+.brick-field.visible .brick {
+  animation: brick-settle 0.35s ease-out both;
+}
+
+/* Drop in from slightly above, bounce softly */
+@keyframes brick-settle {
+  0%   { transform: translateY(-10px); opacity: 0; }
+  65%  { transform: translateY(2px);   opacity: 0.5; }
+  100% { transform: translateY(0);     opacity: 0.5; }
+}
+
+/* Hide on narrow viewports where no page margin exists */
+@media (max-width: 1100px) {
+  .brick-field { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brick-field.visible .brick {
+    animation: none;
+    opacity: 0.5;
+  }
 }
