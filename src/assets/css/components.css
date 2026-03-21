@@ -1019,6 +1019,169 @@ h2, h3, h4, h5, h6 {
   font-size: var(--fs-small);
 }
 
+/* ─── Newsletter ─── */
+
+/* Footer newsletter row — centered above the column grid */
+.footer-newsletter {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.footer-newsletter .newsletter-cta {
+  display: inline;
+}
+
+/* Block CTA: longer text sits on its own line above the form */
+.newsletter-cta-block {
+  display: block !important;
+  margin-bottom: 0.5rem;
+}
+
+.newsletter-cta {
+  color: var(--muted);
+  font-size: var(--fs-small);
+}
+
+.newsletter-form-inner {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  position: relative;
+  vertical-align: middle;
+}
+
+.newsletter-input {
+  width: 16rem;
+  padding: 0.5rem 0.75rem;
+  font-size: var(--fs-small);
+  font-family: var(--font-sans);
+  color: var(--text);
+  background-color: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  transition: border-color 0.15s ease;
+}
+
+.newsletter-input:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.newsletter-input::placeholder {
+  color: var(--muted);
+}
+
+.newsletter-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Override browser autofill background to match theme */
+.newsletter-input:-webkit-autofill,
+.newsletter-input:-webkit-autofill:hover,
+.newsletter-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
+  -webkit-text-fill-color: var(--text);
+  border: 1px solid var(--border);
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.newsletter-button {
+  min-width: 10rem;
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-small);
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.newsletter-button:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.newsletter-button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.newsletter-button:active {
+  transform: translateY(0);
+}
+
+.newsletter-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.newsletter-message {
+  font-size: var(--fs-small);
+}
+
+.newsletter-message:not(:empty) {
+  margin-top: 0.5rem;
+}
+
+.newsletter-message:focus {
+  outline: none;
+}
+
+.newsletter-message.success {
+  color: var(--ok);
+}
+
+.newsletter-message.error {
+  color: var(--warn);
+}
+
+.newsletter-message.error a {
+  color: var(--warn);
+  text-decoration: underline;
+  text-decoration-color: var(--warn);
+}
+
+.newsletter-message.error a:hover {
+  color: var(--warn);
+  text-decoration-color: var(--warn);
+}
+
+/* Turnstile widget: full-width row below input+button; collapses when empty (interaction-only mode) */
+.newsletter-turnstile {
+  flex-basis: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  margin-top: 0.25rem;
+}
+
+.newsletter-turnstile:empty,
+.newsletter-turnstile:not(:has(iframe)) {
+  display: none;
+}
+
+@media (max-width: 639px) {
+  .footer-newsletter .newsletter-cta {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .newsletter-form-inner {
+    display: flex;
+    justify-content: center;
+  }
+
+  .newsletter-input {
+    width: 10rem;
+  }
+}
+
 /* ─── Home Hero ─── */
 
 @media (min-width: 640px) {

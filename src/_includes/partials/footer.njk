@@ -1,4 +1,9 @@
 <footer class="mt-12 pt-6 border-t border-border text-sm text-muted">
+  {% if site.newsletter.enabled %}
+  <div class="footer-newsletter">
+    {% include "partials/newsletter.njk" %}
+  </div>
+  {% endif %}
   <div class="flex justify-between">
     <div>
       <h3 class="font-bold">Topics</h3>

@@ -1,0 +1,34 @@
+{# Newsletter signup form — footer placement.
+   Collects emails for Buttondown RSS-to-email notifications.
+   Usage: {% include "partials/newsletter.njk" %}
+#}
+<div class="newsletter-form">
+  <p class="newsletter-cta newsletter-cta-block">Get notified when I publish new posts. No spam, no algorithms.</p>
+  <form class="newsletter-form-inner"
+        action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.buttondownUsername }}"
+        method="post"
+        data-username="{{ site.newsletter.buttondownUsername }}">
+    <label for="newsletter-email" class="sr-only">Email address</label>
+    <input type="email"
+           id="newsletter-email"
+           name="email"
+           placeholder="Your email"
+           required
+           aria-required="true"
+           class="newsletter-input">
+    {# Honeypot: hidden from humans, catches bots #}
+    <div style="position: absolute; left: -9999px;" aria-hidden="true">
+      <input type="text" name="url" tabindex="-1" autocomplete="off">
+    </div>
+    {# Tag for Layer 2 segmentation: all footer subscribers = blog notifications #}
+    <input type="hidden" name="tag" value="blog-notifications">
+    <button type="submit" class="newsletter-button">Subscribe</button>
+    {# Cloudflare Turnstile: required by Buttondown for embed-subscribe endpoint. #}
+    <div class="cf-turnstile newsletter-turnstile"
+         data-sitekey="{{ site.newsletter.turnstileSitekey }}"
+         data-size="compact"
+         data-appearance="interaction-only"
+         data-theme="auto"></div>
+  </form>
+  <div class="newsletter-message" aria-live="polite" role="status"></div>
+</div>

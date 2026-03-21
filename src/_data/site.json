@@ -6,5 +6,10 @@
     "name": "Vadym Mariiechko",
     "email": "vmariiechko@gmail.com"
   },
-  "image": "/assets/images/default-social-image.png"
+  "image": "/assets/images/default-social-image.png",
+  "newsletter": {
+    "enabled": true,
+    "buttondownUsername": "vmariiechko",
+    "turnstileSitekey": "0x4AAAAAABrWC8POBFndQnsz"
+  }
 }
