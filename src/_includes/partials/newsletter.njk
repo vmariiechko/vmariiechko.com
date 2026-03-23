@@ -7,6 +7,7 @@
   <form class="newsletter-form-inner"
         action="https://buttondown.com/api/emails/embed-subscribe/{{ site.newsletter.buttondownUsername }}"
         method="post"
+        aria-label="Newsletter signup"
         data-username="{{ site.newsletter.buttondownUsername }}">
     <label for="newsletter-email" class="sr-only">Email address</label>
     <input type="email"
@@ -15,6 +16,7 @@
            placeholder="Your email"
            required
            aria-required="true"
+           autocomplete="email"
            class="newsletter-input">
     {# Honeypot: hidden from humans, catches bots #}
     <div style="position: absolute; left: -9999px;" aria-hidden="true">

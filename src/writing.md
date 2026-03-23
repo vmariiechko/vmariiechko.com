@@ -1,6 +1,7 @@
 ---
 layout: layouts/base.njk
 title: "Writing"
+description: "Long-form articles and tutorials on Databricks, data engineering patterns, and building real data systems."
 permalink: /writing/{% if pagination.pageNumber > 0 %}page/{{ pagination.pageNumber + 1 }}/{% endif %}
 pagination:
   data: collections.posts

@@ -40,6 +40,7 @@ function applyTheme(themeName) {
     const isDark = getEffectiveTheme(themeName) === 'dark';
     toggle.querySelector('.sun').style.display = isDark ? 'none' : 'block';
     toggle.querySelector('.moon').style.display = isDark ? 'block' : 'none';
+    toggle.setAttribute('aria-pressed', isDark ? 'true' : 'false');
   }
 
   // Dispatch theme change event for external listeners (e.g., Mermaid)
