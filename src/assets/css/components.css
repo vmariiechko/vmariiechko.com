@@ -304,6 +304,79 @@
     height: auto;
   }
 
+  /* Rounded corners on all mermaid flow nodes */
+  .mermaid svg .node rect {
+    rx: 8;
+    ry: 8;
+  }
+
+  /* Details/Summary styling */
+  .prose details {
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 0;
+    margin: 1.5rem 0;
+    background-color: var(--surface);
+    overflow: hidden;
+  }
+
+  .prose details summary {
+    cursor: pointer;
+    padding: 0.75rem 1rem;
+    font-weight: 500;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.15s ease;
+  }
+
+  /* Hide default marker across browsers */
+  .prose details summary::-webkit-details-marker {
+    display: none;
+  }
+  .prose details summary::marker {
+    display: none;
+    content: '';
+  }
+
+  /* Custom chevron */
+  .prose details summary::before {
+    content: '\25B8'; /* ▸ */
+    display: inline-block;
+    font-size: 1.50em;
+    line-height: 1;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    color: var(--accent);
+  }
+
+  .prose details[open] summary::before {
+    transform: rotate(90deg);
+  }
+
+  .prose details summary:hover {
+    background-color: color-mix(in oklch, var(--surface) 85%, var(--accent));
+  }
+
+  /* Text content gets horizontal padding; code blocks get margin
+     so their internal full-width styling is not squished */
+  .prose details > p,
+  .prose details > ul,
+  .prose details > ol,
+  .prose details > figure {
+    padding: 0 1rem;
+  }
+
+  .prose details > pre {
+    margin-left: 1rem;
+    margin-right: 1rem;
+  }
+
+  .prose details > *:last-child {
+    margin-bottom: 0.5rem;
+  }
+
   /* Search Modal */
   .search-modal {
     position: fixed;
