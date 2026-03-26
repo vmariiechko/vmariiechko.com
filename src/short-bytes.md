@@ -13,6 +13,7 @@ pagination:
 <p class="text-muted">Quick notes, tips, and code snippets.</p>
 
 <div class="mt-8">
+  {% include "partials/tag-filter.njk" %}
   {% include "partials/short-bytes-list.njk" %}
 </div>
 

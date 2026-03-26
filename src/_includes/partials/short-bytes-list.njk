@@ -1,7 +1,14 @@
 {%- set items = pagination.items -%}
 <ul class="space-y-4">
 {%- for shortByte in items -%}
-  <li class="pb-4">
+  {%- set allTags = [] -%}
+  {%- if shortByte.data.topics -%}{%- set allTags = allTags | concat(shortByte.data.topics) -%}{%- endif -%}
+  {%- if shortByte.data.tags -%}
+    {%- for tag in shortByte.data.tags -%}
+      {%- if tag != "Short Byte" -%}{%- set allTags = allTags | concat([tag]) -%}{%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  <li class="pb-4" data-tags='{{ allTags | dump | safe }}'>
     <h2 class="text-2xl font-bold mb-2">
       <a href="{{ shortByte.url }}" class="nav-link">{{ shortByte.data.title }}</a>
     </h2>

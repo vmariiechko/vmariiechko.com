@@ -1,0 +1,36 @@
+{%- set uniqueTags = [] -%}
+{%- for item in pagination.items -%}
+  {%- if item.data.topics -%}
+    {%- for topic in item.data.topics -%}
+      {%- if topic not in uniqueTags -%}
+        {%- set uniqueTags = uniqueTags | concat([topic]) -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+  {%- if item.data.tags -%}
+    {%- for tag in item.data.tags -%}
+      {%- if tag != "Post" and tag != "Short Byte" and tag not in uniqueTags -%}
+        {%- set uniqueTags = uniqueTags | concat([tag]) -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- if uniqueTags.length > 0 -%}
+<div class="tag-filter-bar flex flex-wrap items-center gap-2 mb-6" role="toolbar" aria-label="Filter by tag">
+  <button type="button"
+    class="tag-filter-btn tag-chip-sm active"
+    data-filter-tag="all"
+    aria-pressed="true">
+    All
+  </button>
+  {%- for tag in uniqueTags | sort -%}
+  <button type="button"
+    class="tag-filter-btn tag-chip-sm"
+    data-filter-tag="{{ tag }}"
+    aria-pressed="false">
+    {{ tag }}
+  </button>
+  {%- endfor -%}
+</div>
+{%- endif -%}

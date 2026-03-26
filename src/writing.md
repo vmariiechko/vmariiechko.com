@@ -13,6 +13,7 @@ pagination:
 <p class="text-muted">Long-form articles, tutorials, and deep dives.</p>
 
 <div class="mt-8">
+  {% include "partials/tag-filter.njk" %}
   {% include "partials/posts-list.njk" %}
 </div>
 
