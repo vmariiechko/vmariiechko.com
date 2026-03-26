@@ -1,5 +1,6 @@
 @layer base {
-  html { color-scheme: light dark; scrollbar-gutter: stable; }
+  html { color-scheme: light dark; scrollbar-gutter: stable; scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
     font-family: var(--ff-sans);
     font-size: var(--fs-body);
@@ -48,7 +49,7 @@
     font-family: var(--ff-mono);
     font-size: var(--fs-code);
     background: var(--code-inline-bg);
-    border: 1px solid color-mix(in oklch, var(--text) 20%, transparent);
+    border: 1px solid color-mix(in oklch, var(--text) 14%, transparent);
     padding: 0.1em 0.3em;
     border-radius: 0.25rem;
     font-variant-ligatures: none;

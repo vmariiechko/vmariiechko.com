@@ -727,13 +727,21 @@ h2, h3, h4, h5, h6 {
     /* Center the content */
     max-width: 896px;
     margin: 0 auto;
+    transition: max-width 0.3s ease;
+  }
+
+  /* Reading mode: content expands when TOC is hidden */
+  .post-content.toc-expanded {
+    max-width: 1024px;
   }
 
   .post-sidebar {
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: fixed;
     right: max(1rem, calc((100vw - 896px) / 2 - 280px));
     top: 6rem;
+    bottom: 2rem;
     width: 256px;
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
@@ -746,7 +754,8 @@ h2, h3, h4, h5, h6 {
   }
 
   .post-toc {
-    max-height: calc(100vh - 8rem);
+    flex: 1;
+    min-height: 0;
     overflow-y: auto;
     padding-right: 1rem;
 

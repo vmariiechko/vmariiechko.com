@@ -8,15 +8,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!tocSidebar || !tocToggle || !tocShowButton) return;
 
+  const postContent = document.querySelector('.post-content');
+
   // Set initial aria-expanded based on current state
   const isHidden = tocSidebar.classList.contains('toc-hidden');
   tocToggle.setAttribute('aria-expanded', !isHidden);
+  // Fallback: ensure toc-expanded matches toc-hidden on load
+  if (isHidden && postContent) postContent.classList.add('toc-expanded');
 
   // Hide toggle functionality
   tocToggle.addEventListener('click', () => {
     tocSidebar.classList.add('toc-hidden');
     tocToggle.setAttribute('aria-expanded', 'false');
     localStorage.setItem('tocHidden', 'true');
+    if (postContent) postContent.classList.add('toc-expanded');
   });
 
   // Show toggle functionality
@@ -24,7 +29,26 @@ document.addEventListener('DOMContentLoaded', () => {
     tocSidebar.classList.remove('toc-hidden');
     tocToggle.setAttribute('aria-expanded', 'true');
     localStorage.setItem('tocHidden', 'false');
+    if (postContent) postContent.classList.remove('toc-expanded');
   });
+
+  // Footer avoidance: adjust sidebar bottom when footer enters viewport
+  const footer = document.querySelector('footer');
+  if (footer) {
+    function updateSidebarBottom() {
+      if (tocSidebar.classList.contains('toc-hidden')) return;
+      const footerTop = footer.getBoundingClientRect().top;
+      const gap = 16; // px gap above footer
+      if (footerTop < window.innerHeight) {
+        tocSidebar.style.bottom = Math.max(0, window.innerHeight - footerTop + gap) + 'px';
+      } else {
+        tocSidebar.style.bottom = '';
+      }
+    }
+    window.addEventListener('scroll', updateSidebarBottom, { passive: true });
+    window.addEventListener('resize', updateSidebarBottom, { passive: true });
+    updateSidebarBottom();
+  }
 
   // Scroll-following highlight
   const tocLinks = document.querySelectorAll('.toc-link');

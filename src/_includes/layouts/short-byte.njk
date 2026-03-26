@@ -7,6 +7,13 @@ isContentPage: true
 
 {# Wrapper for relative positioning #}
 <div class="post-layout">
+  {%- if toc.length > 0 -%}
+  <script>
+    if (localStorage.getItem('tocHidden') === 'true') {
+      document.currentScript.nextElementSibling.classList.add('toc-expanded');
+    }
+  </script>
+  {%- endif -%}
   <article class="prose lg:prose-xl post-content">
     <header>
       <h1>{{ title }}</h1>
