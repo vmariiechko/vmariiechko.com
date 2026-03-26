@@ -532,6 +532,13 @@
   color: var(--text);
 }
 
+/* Active state for scroll-following */
+.toc-link.toc-link-active,
+.toc-link.toc-link-active:visited {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+
 /* Heading anchor links */
 .heading-wrapper {
   display: block;
