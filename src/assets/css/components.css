@@ -89,6 +89,40 @@
   .nav-link[aria-current="page"]::after{ transform:scaleX(1); }
   .nav-link:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
 
+  /* Site logo in header */
+  .site-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text);
+    font-weight: 700;
+    transition: opacity 0.15s ease;
+  }
+
+  .site-logo-link:hover {
+    opacity: 0.8;
+  }
+
+  .site-logo {
+    display: block;
+    height: 55px;
+    width: auto;
+  }
+
+  /* Theme-aware logo switching */
+  .site-logo-light { display: none; }
+  .site-logo-dark { display: block; }
+
+  [data-theme="light"] .site-logo-dark,
+  [data-theme="light-blue"] .site-logo-dark {
+    display: none;
+  }
+  [data-theme="light"] .site-logo-light,
+  [data-theme="light-blue"] .site-logo-light {
+    display: block;
+  }
+
   /* Prose / Content ink links */
   .prose a:not([class]) {
     text-decoration:none;
@@ -705,7 +739,6 @@ h2, h3, h4, h5, h6 {
 .post-layout {
   display: block;
   position: relative;
-  width: 100%;
 }
 
 .post-content {
@@ -721,6 +754,13 @@ h2, h3, h4, h5, h6 {
 @media (min-width: 1280px) {
   .post-layout {
     position: relative;
+    transition: margin 0.3s ease;
+  }
+
+  /* Reading mode: break out of max-w-4xl container */
+  .post-layout:has(.toc-expanded) {
+    margin-left: calc(-1 * (1024px - 100%) / 2);
+    margin-right: calc(-1 * (1024px - 100%) / 2);
   }
 
   .post-content {

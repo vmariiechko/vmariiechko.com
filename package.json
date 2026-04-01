@@ -1,7 +1,7 @@
 {
   "name": "vmariiechko.com",
   "version": "1.0.0",
-  "description": "A personal website for Vadym Mariiechko",
+  "description": "A personal website for Vadim Mariiechko",
   "main": ".eleventy.js",
   "engines": {
     "node": ">=20.18.1"
