@@ -33,6 +33,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "autoprefixer": "^10.4.21",
     "cross-env": "^7.0.3",
+    "cssnano": "^7.1.4",
     "eleventy-plugin-phosphoricons": "^1.3.0",
     "eslint": "^8.57.1",
     "husky": "^9.1.7",
