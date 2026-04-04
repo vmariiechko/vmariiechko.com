@@ -3,14 +3,10 @@
     <a href="/" class="site-logo-link">
       <img src="/favicons/logo-dark.svg" alt="" class="site-logo site-logo-dark" width="53" height="55" aria-hidden="true">
       <img src="/favicons/logo-light.svg" alt="" class="site-logo site-logo-light" width="53" height="55" aria-hidden="true">
-      <span class="text-2xl font-bold">{{ site.title }}</span>
+      <span class="hidden sm:inline text-2xl font-bold">{{ site.title }}</span>
     </a>
-    <nav class="flex items-center space-x-6" aria-label="Main navigation">
-      <a href="/writing/" class="nav-link">Writing</a>
-      <a href="/short-bytes/" class="nav-link">Short Bytes</a>
-      <a href="/tags/" class="nav-link">Tags</a>
-      <a href="/about/" class="nav-link">About</a>
 
+    <div class="header-actions flex items-center gap-4">
       <button type="button" id="search-toggle" class="theme-button" aria-label="Search">
         <span class="search">{% phicon "magnifying-glass", "regular" %}</span>
       </button>
@@ -45,6 +41,22 @@
           </div>
         </details>
       {% endif %}
+
+      <button type="button" id="nav-toggle" class="theme-button md:hidden"
+              aria-label="Open menu" aria-expanded="false" aria-controls="nav-menu">
+        <span class="nav-icon-open">{% phicon "list", "regular" %}</span>
+        <span class="nav-icon-close" style="display: none;">{% phicon "x", "regular" %}</span>
+      </button>
+    </div>
+
+    <nav id="nav-menu" class="nav-menu" aria-label="Main navigation">
+      <div class="nav-menu-backdrop"></div>
+      <div class="nav-menu-card">
+        <a href="/writing/" class="nav-link nav-menu-link">Writing</a>
+        <a href="/short-bytes/" class="nav-link nav-menu-link">Short Bytes</a>
+        <a href="/tags/" class="nav-link nav-menu-link">Tags</a>
+        <a href="/about/" class="nav-link nav-menu-link">About</a>
+      </div>
     </nav>
   </div>
 </header>

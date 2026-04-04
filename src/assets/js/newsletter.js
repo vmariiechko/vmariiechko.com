@@ -28,8 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // Loading state
       button.disabled = true;
-      const originalText = button.textContent;
-      button.textContent = 'Subscribing\u2026';
+      const textSpan = button.querySelector('.newsletter-button-text');
+      const originalText = textSpan ? textSpan.textContent : button.textContent;
+      setButtonLabel(button, textSpan, 'Subscribing\u2026', true);
       clearMessage(messageEl);
 
       // Require Turnstile token if widget is present
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (turnstileWidget && !turnstileToken) {
         showMessage(messageEl, 'error', MSG_TURNSTILE);
         button.disabled = false;
-        button.textContent = originalText;
+        setButtonLabel(button, textSpan, originalText);
         messageEl.focus();
         return;
       }
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
           showMessage(messageEl, 'error', MSG_ERROR);
           button.disabled = false;
-          button.textContent = originalText;
+          setButtonLabel(button, textSpan, originalText);
 
           if (turnstileWidget && window.turnstile) {
             turnstile.reset(turnstileWidget);
@@ -83,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } catch {
         showMessage(messageEl, 'error', MSG_ERROR);
         button.disabled = false;
-        button.textContent = originalText;
+        setButtonLabel(button, textSpan, originalText);
 
         if (turnstileWidget && window.turnstile) {
           turnstile.reset(turnstileWidget);
@@ -98,7 +99,8 @@ document.addEventListener('DOMContentLoaded', () => {
     emailInput.disabled = true;
     emailInput.value = '';
     button.disabled = true;
-    button.textContent = 'Subscribed';
+    const textSpan = button.querySelector('.newsletter-button-text');
+    setButtonLabel(button, textSpan, 'Subscribed', true);
 
     // Hide Turnstile — no further submissions needed
     const turnstileWidget = form.querySelector('.cf-turnstile');
@@ -145,5 +147,21 @@ document.addEventListener('DOMContentLoaded', () => {
     el.innerHTML = '';
     el.className = 'newsletter-message';
     el.removeAttribute('tabindex');
+  }
+
+  // Update button label. When showText is true (loading/success),
+  // force the text visible and hide the icon on mobile.
+  // When false (reset to default), restore icon-only mobile behavior.
+  function setButtonLabel(button, textSpan, label, showText) {
+    if (textSpan) {
+      textSpan.textContent = label;
+      if (showText) {
+        button.classList.add('newsletter-button--has-label');
+      } else {
+        button.classList.remove('newsletter-button--has-label');
+      }
+    } else {
+      button.textContent = label;
+    }
   }
 });

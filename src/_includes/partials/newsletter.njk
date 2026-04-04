@@ -24,7 +24,10 @@
     </div>
     {# Tag for Layer 2 segmentation: all footer subscribers = blog notifications #}
     <input type="hidden" name="tag" value="blog-notifications">
-    <button type="submit" class="newsletter-button">Subscribe</button>
+    <button type="submit" class="newsletter-button">
+      <span class="newsletter-button-text">Subscribe</span>
+      <span class="newsletter-button-icon" aria-hidden="true">{% phicon "paper-plane-right", "regular" %}</span>
+    </button>
     {# Cloudflare Turnstile: required by Buttondown for embed-subscribe endpoint. #}
     <div class="cf-turnstile newsletter-turnstile"
          data-sitekey="{{ site.newsletter.turnstileSitekey }}"

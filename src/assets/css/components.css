@@ -50,22 +50,10 @@
     Visible by default
   } */
 
-  /* On small screens, hide text and show icons only */
+  /* On small screens, keep icon + text visible in same row */
   @media (max-width: 639px) {
-    .social-text {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border-width: 0;
-    }
-
     .social-link::after {
-      /* Disable underline on mobile (icons-only) */
+      /* Disable underline animation on mobile */
       display: none;
     }
 
@@ -88,6 +76,127 @@
   /* Active route */
   .nav-link[aria-current="page"]::after{ transform:scaleX(1); }
   .nav-link:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+
+  /* ─── Mobile Navigation Modal ─── */
+
+  /* Mobile: full-screen modal overlay (mirrors search modal) */
+  .nav-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10vh;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+  }
+
+  .nav-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: all;
+  }
+
+  .nav-menu-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-menu-card {
+    position: relative;
+    width: 90%;
+    max-width: 24rem;
+    background: var(--surface);
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    padding: 1.25rem 1.5rem;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .nav-menu.is-open .nav-menu-card {
+    animation: slideDown 0.3s ease;
+  }
+
+  /* Mobile nav links: large touch targets */
+  .nav-menu-link {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    min-height: 2.75rem; /* 44px touch target */
+    font-size: 1.125rem;
+  }
+
+  /* Suppress the ::after underline in modal dropdown —
+     horizontal underlines under stacked links look awkward.
+     Use text color shift on hover instead. */
+  .nav-menu .nav-menu-link::after {
+    display: none;
+  }
+
+  .nav-menu .nav-menu-link:hover {
+    color: var(--accent);
+  }
+
+  /* Desktop (md+): inline nav, no dropdown behavior */
+  @media (min-width: 768px) {
+    /* Switch from justify-between to manual spacing so 3 children
+       lay out as: [Logo] ··· [Nav links] [gap] [Actions] */
+    header > .container {
+      justify-content: flex-start;
+    }
+
+    /* Override mobile modal — nav is always visible inline at desktop */
+    .nav-menu {
+      position: static;
+      inset: auto;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: all;
+      background: transparent;
+      padding: 0;
+      flex-direction: row;
+      align-items: center;
+      gap: 1.5rem;
+      margin-left: auto;
+      order: 1;
+      transition: none;
+    }
+
+    .nav-menu-backdrop {
+      display: none;
+    }
+
+    .nav-menu-card {
+      display: contents;
+    }
+
+    .nav-menu-link {
+      padding: 0.25rem 0;
+      min-height: auto;
+      font-size: inherit;
+    }
+
+    /* Restore the underline animation for desktop nav links */
+    .nav-menu .nav-menu-link::after {
+      display: block;
+    }
+
+    .nav-menu .nav-menu-link:hover {
+      color: var(--link);
+    }
+
+    .header-actions {
+      margin-left: 1.5rem;
+      order: 2;
+    }
+  }
 
   /* Site logo in header */
   .site-logo-link {
@@ -230,6 +339,15 @@
     border-color: var(--accent);
   }
 
+  /* Larger touch targets for tag chips on mobile */
+  @media (max-width: 767px) {
+    .tag-chip,
+    .tag-filter-btn {
+      min-height: 2.75rem;
+      padding: 0.5rem 0.75rem;
+    }
+  }
+
   /* Callout Styles */
   .callout-info, .callout-success, .callout-warning {
     @apply my-6 p-4 border-l-4 rounded-r-lg;
@@ -259,7 +377,12 @@
     color: var(--text);
   }
 
-  /* Floating copy button (top-right) */
+  /* Code block wrapper: positioning context for copy button */
+  .code-block-wrapper {
+    position: relative;
+  }
+
+  /* Floating copy button (top-right of wrapper, outside scrollable pre) */
   .copy-button {
     position: absolute; top: .5rem; right: .5rem; z-index: 2;
     display: inline-flex; align-items: center; gap: .25rem;
@@ -268,7 +391,7 @@
     border: 1px solid var(--border);
     opacity: 0; transition: opacity .18s ease, color .18s ease, border-color .18s ease;
   }
-  pre:hover .copy-button, .copy-button:focus-visible { opacity: 1; }
+  .code-block-wrapper:hover .copy-button, .copy-button:focus-visible { opacity: 1; }
   .copy-button:hover { color: var(--text); border-color: var(--accent); }
   .copy-button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
@@ -344,6 +467,17 @@
     ry: 8;
   }
 
+  /* Mermaid: allow horizontal scroll on small screens */
+  @media (max-width: 639px) {
+    .mermaid {
+      overflow-x: auto;
+      justify-content: flex-start;
+    }
+    .mermaid svg {
+      max-width: none;
+    }
+  }
+
   /* Details/Summary styling */
   .prose details {
     border: 1px solid var(--border);
@@ -402,7 +536,8 @@
     padding: 0 1rem;
   }
 
-  .prose details > pre {
+  .prose details > pre,
+  .prose details > .code-block-wrapper > pre {
     margin-left: 1rem;
     margin-right: 1rem;
   }
@@ -730,6 +865,13 @@
   opacity: 1;
 }
 
+/* On mobile (no hover), show anchor at reduced opacity so it's discoverable */
+@media (max-width: 767px) {
+  .heading-anchor {
+    opacity: 0.4;
+  }
+}
+
 /* Scroll offset for fixed header */
 h2, h3, h4, h5, h6 {
   scroll-margin-top: 6rem;
@@ -750,8 +892,8 @@ h2, h3, h4, h5, h6 {
   display: none;
 }
 
-/* On wide screens (≥1280px), show sidebar on absolute right */
-@media (min-width: 1280px) {
+/* On wide screens (≥1440px), show sidebar on absolute right */
+@media (min-width: 1440px) {
   .post-layout {
     position: relative;
     transition: margin 0.3s ease;
@@ -1231,6 +1373,10 @@ h2, h3, h4, h5, h6 {
   transition: background-color 5000s ease-in-out 0s;
 }
 
+.newsletter-button-icon {
+  display: none;
+}
+
 .newsletter-button {
   min-width: 10rem;
   padding: 0.5rem 1rem;
@@ -1323,7 +1469,45 @@ h2, h3, h4, h5, h6 {
   }
 
   .newsletter-input {
-    width: 10rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .newsletter-button {
+    min-width: auto;
+    padding: 0.5rem 0.75rem;
+  }
+
+  .newsletter-button-text {
+    display: none;
+  }
+
+  .newsletter-button-icon {
+    display: inline-flex;
+  }
+
+  /* During loading/success states, show text label and hide icon */
+  .newsletter-button--has-label .newsletter-button-text {
+    display: inline;
+  }
+
+  .newsletter-button--has-label .newsletter-button-icon {
+    display: none;
+  }
+
+  .newsletter-button--has-label {
+    min-width: auto;
+  }
+}
+
+/* Larger touch targets for newsletter form on mobile */
+@media (max-width: 767px) {
+  .newsletter-input,
+  .newsletter-button {
+    min-height: 2.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -1359,7 +1543,7 @@ img.hero-avatar-light { display: none; }
 
 @media (max-width: 639px) {
   .hero-avatar {
-    width: 100px;
+    width: 150px;
     margin: 0 auto 1.5rem;
   }
 }

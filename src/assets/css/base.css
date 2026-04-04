@@ -61,6 +61,7 @@
     font-family: var(--ff-mono);
     font-size: var(--fs-code);
     line-height: 1.55;
+    display: block;
   }
 
   /*
@@ -93,6 +94,8 @@
     width: 100%;
     border-collapse: collapse;
     font-size: var(--fs-small);
+    display: block;
+    overflow-x: auto;
   }
   th, td { border-bottom: 1px solid var(--border); padding: 0.6rem 0.4rem; }
   th { text-align: left; font-weight: 600; }

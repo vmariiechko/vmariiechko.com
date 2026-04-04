@@ -5,11 +5,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const code = block.querySelector('code');
     if (!code) return;
 
+    // Wrap pre in a container so the copy button stays fixed
+    // outside the scrollable area
+    const wrapper = document.createElement('div');
+    wrapper.className = 'code-block-wrapper';
+    block.parentNode.insertBefore(wrapper, block);
+    wrapper.appendChild(block);
+
     const copyButton = document.createElement('button');
     copyButton.className = 'copy-button';
     copyButton.textContent = 'Copy';
 
-    block.appendChild(copyButton);
+    wrapper.appendChild(copyButton);
 
     copyButton.addEventListener('click', () => {
       navigator.clipboard.writeText(code.innerText).then(() => {
