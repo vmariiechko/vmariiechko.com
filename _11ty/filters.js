@@ -80,7 +80,14 @@ module.exports = {
         while ((match = headingRegex.exec(content)) !== null) {
             const level = parseInt(match[1]);
             const id = match[2];
-            const text = match[3].replace(/<[^>]*>/g, '').trim(); // Strip inner tags
+            const text = match[3]
+                .replace(/<[^>]*>/g, '') // Strip inner HTML tags
+                .replace(/&amp;/g, '&')
+                .replace(/&lt;/g, '<')
+                .replace(/&gt;/g, '>')
+                .replace(/&quot;/g, '"')
+                .replace(/&#39;/g, "'")
+                .trim();
 
             headings.push({ level, id, text });
         }
