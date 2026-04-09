@@ -5,8 +5,6 @@ const markdownItPrism = require('markdown-it-prism');
 const markdownItContainer = require('markdown-it-container');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItTOC = require('markdown-it-table-of-contents');
-const Image = require('@11ty/eleventy-img');
-const path = require('path');
 const phosphor = require('eleventy-plugin-phosphoricons');
 
 const shortcodes = require('./_11ty/shortcodes.js');
@@ -45,44 +43,6 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('src/manifest.webmanifest');
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.jpg');
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.png');
-
-    // Asynchronous image shortcode
-    // TODO: Move this to shortcodes.js
-    async function imageShortcode(src, alt, caption, sizes = '100vw') {
-        if (!alt) {
-            throw new Error(`Missing \`alt\` on image shortcode from: ${src}`);
-        }
-
-        let metadata = await Image(src, {
-            widths: [400, 800, 1200],
-            formats: ['avif', 'webp', 'jpeg'],
-            outputDir: './_site/img/',
-            urlPath: '/img/',
-        });
-
-        let imageAttributes = {
-            alt,
-            sizes,
-            loading: 'lazy',
-            decoding: 'async',
-        };
-
-        const imageHTML = Image.generateHTML(metadata, imageAttributes);
-
-        if (caption) {
-            return `<figure class="captioned-figure">${imageHTML}<figcaption>${caption}</figcaption></figure>`;
-        }
-        return imageHTML;
-    }
-
-    eleventyConfig.addNunjucksAsyncShortcode('image', imageShortcode);
-
-    eleventyConfig.addNunjucksAsyncShortcode('postImage', async function (src, alt, caption) {
-        const postDirectory = path.dirname(this.page.inputPath);
-        const fullSrc = path.join(postDirectory, src);
-        const sizes = '(max-width: 768px) 100vw, 768px';
-        return imageShortcode(fullSrc, alt, caption, sizes);
-    });
 
     // Create a collection of posts
     eleventyConfig.addCollection('posts', (collectionApi) => {
