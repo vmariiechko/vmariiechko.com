@@ -43,6 +43,9 @@ module.exports = function (eleventyConfig) {
     eleventyConfig.addPassthroughCopy('src/manifest.webmanifest');
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.jpg');
     eleventyConfig.addPassthroughCopy('src/content/posts/**/*.png');
+    eleventyConfig.addPassthroughCopy({
+        'node_modules/medium-zoom/dist/medium-zoom.min.js': 'assets/js/vendors/medium-zoom.min.js',
+    });
 
     // Create a collection of posts
     eleventyConfig.addCollection('posts', (collectionApi) => {

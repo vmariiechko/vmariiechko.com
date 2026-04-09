@@ -25,7 +25,7 @@ async function imageShortcode(src, alt, caption, sizes = '100vw', link = false) 
     if (link) {
         const formats = metadata.webp || metadata.jpeg || metadata.avif;
         const largestUrl = formats[formats.length - 1].url;
-        imageHTML = `<a href="${largestUrl}" target="_blank" rel="noopener">${imageHTML}</a>`;
+        imageHTML = imageHTML.replace(/(<img\s)/i, `$1data-zoom-src="${largestUrl}" `);
     }
 
     if (caption) {

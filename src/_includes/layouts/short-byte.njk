@@ -113,3 +113,9 @@ isContentPage: true
 
 {# ToC toggle functionality - no defer to prevent animation flash #}
 <script src="/assets/js/toc.js"></script>
+
+{# Image zoom — only loaded when page contains zoomable images #}
+{% if 'data-zoom-src' in content %}
+<script src="/assets/js/vendors/medium-zoom.min.js" defer></script>
+<script src="/assets/js/zoom.js" defer></script>
+{% endif %}
