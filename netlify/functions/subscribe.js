@@ -30,24 +30,23 @@ exports.handler = async (event) => {
     };
   }
 
-  // Call Buttondown API
+  const apiHeaders = {
+    'Content-Type': 'application/json',
+    Authorization: `Token ${process.env.BUTTONDOWN_API_KEY}`,
+  };
+  const tags = tag ? [tag] : [];
+
+  // Attempt to create the subscriber.
+  // X-Buttondown-Collision-Behavior: add merges tags on existing active subscribers
+  // instead of rejecting the request, so re-submits by active subscribers succeed.
   try {
-    const response = await fetch('https://api.buttondown.com/v1/subscribers', {
+    const createResponse = await fetch('https://api.buttondown.com/v1/subscribers', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Token ${process.env.BUTTONDOWN_API_KEY}`,
-      },
-      body: JSON.stringify({
-        email,
-        tags: tag ? [tag] : [],
-        referrer_url: event.headers.referer || event.headers.referrer || '',
-      }),
+      headers: { ...apiHeaders, 'X-Buttondown-Collision-Behavior': 'add' },
+      body: JSON.stringify({ email_address: email, tags }),
     });
 
-    const data = await response.json();
-
-    if (response.ok || response.status === 201) {
+    if (createResponse.ok || createResponse.status === 201) {
       return {
         statusCode: 201,
         headers: { 'Content-Type': 'application/json' },
@@ -55,11 +54,40 @@ exports.handler = async (event) => {
       };
     }
 
-    // Forward Buttondown's error (e.g., duplicate subscriber, invalid email)
+    // On 400, the subscriber likely exists but is unsubscribed.
+    // Fall back to PATCH to update their record (re-adds tags, may reactivate).
+    if (createResponse.status === 400) {
+      const patchResponse = await fetch(
+        `https://api.buttondown.com/v1/subscribers/${encodeURIComponent(email)}`,
+        {
+          method: 'PATCH',
+          headers: apiHeaders,
+          body: JSON.stringify({ tags }),
+        }
+      );
+
+      if (patchResponse.ok || patchResponse.status === 200) {
+        return {
+          statusCode: 201,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'ok' }),
+        };
+      }
+
+      const patchData = await patchResponse.json();
+      return {
+        statusCode: patchResponse.status,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patchData),
+      };
+    }
+
+    // Any other non-success status from create (e.g. invalid email)
+    const createData = await createResponse.json();
     return {
-      statusCode: response.status,
+      statusCode: createResponse.status,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify(createData),
     };
   } catch (err) {
     return {
