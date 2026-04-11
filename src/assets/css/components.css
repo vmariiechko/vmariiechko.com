@@ -242,6 +242,35 @@
   .prose a:not([class]):hover, .prose a:not([class]):focus-visible { background-size:100% 2px; }
   .prose a:not([class]):visited { color:var(--link); }
 
+  /* Inline interactive text input (used in posts for reader interaction) */
+  .inline-input {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    color: var(--text);
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px dashed var(--muted);
+    padding: 0 0.1em;
+    width: 26ch;  /* note it's hardcoded for Who Am I article */
+    max-width: 100%;
+    outline: none;
+    caret-color: var(--accent);
+    transition: border-color 0.2s ease;
+  }
+  .inline-input::placeholder {
+    color: var(--muted);
+    opacity: 0.6;
+    font-style: italic;
+  }
+  .inline-input:hover {
+    border-bottom-color: var(--accent);
+  }
+  .inline-input:focus {
+    border-bottom-color: var(--accent);
+    border-bottom-style: solid;
+  }
+
   @media (min-width: 900px){
     .prose table thead th { position: sticky; top: 0; background: var(--bg); }
   }
