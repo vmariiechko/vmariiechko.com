@@ -40,14 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (turnstileWidget && !turnstileToken) {
         turnstileToken = await waitForTurnstileToken(form, 3000);
       }
-
-      if (turnstileWidget && !turnstileToken) {
-        showMessage(messageEl, 'error', MSG_TURNSTILE);
-        button.disabled = false;
-        setButtonLabel(button, textSpan, originalText);
-        messageEl.focus();
-        return;
-      }
+      // If still no token, proceed without it — honeypot provides baseline protection.
+      // Buttondown's endpoint may reject tokenless requests; if so, fall through to error handling.
 
       // Build form data
       const body = new URLSearchParams({ email });
