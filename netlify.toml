@@ -15,7 +15,7 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=()"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://giscus.app https://challenges.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev https://buttondown.com; frame-src https://giscus.app https://challenges.cloudflare.com;"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://giscus.app https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://giscus.app; img-src 'self' data: https:; font-src 'self'; connect-src 'self' https://cloud.umami.is https://api-gateway.umami.dev; frame-src https://giscus.app;"
 
 [[plugins]]
   package = "netlify-plugin-cache"
