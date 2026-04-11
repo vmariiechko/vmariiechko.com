@@ -36,6 +36,15 @@ exports.handler = async (event) => {
   };
   const tags = tag ? [tag] : [];
 
+  // Passing ip_address lets Buttondown validate legitimacy and prevents its firewall
+  // from blocking requests. Legitimate-interest basis under GDPR (spam prevention).
+  // x-nf-client-connection-ip is Netlify's own hardened header (not spoofable by clients).
+  const clientIp =
+    event.headers['x-forwarded-for']?.split(',')[0]?.trim() ||
+    event.headers['client-ip'] ||
+    event.headers['x-nf-client-connection-ip'] ||
+    undefined;
+
   // Attempt to create the subscriber.
   // X-Buttondown-Collision-Behavior: add merges tags on existing active subscribers
   // instead of rejecting the request, so re-submits by active subscribers succeed.
@@ -43,7 +52,7 @@ exports.handler = async (event) => {
     const createResponse = await fetch('https://api.buttondown.com/v1/subscribers', {
       method: 'POST',
       headers: { ...apiHeaders, 'X-Buttondown-Collision-Behavior': 'add' },
-      body: JSON.stringify({ email_address: email, tags }),
+      body: JSON.stringify({ email_address: email, tags, ...(clientIp && { ip_address: clientIp }) }),
     });
 
     if (createResponse.ok || createResponse.status === 201) {
@@ -62,7 +71,7 @@ exports.handler = async (event) => {
         {
           method: 'PATCH',
           headers: apiHeaders,
-          body: JSON.stringify({ tags }),
+          body: JSON.stringify({ tags, ...(clientIp && { ip_address: clientIp }) }),
         }
       );
 
