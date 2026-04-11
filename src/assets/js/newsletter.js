@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (turnstileToken) {
         body.set('cf-turnstile-response', turnstileToken);
+      } else {
+        body.set('cf-turnstile-response', '');
       }
 
       try {
