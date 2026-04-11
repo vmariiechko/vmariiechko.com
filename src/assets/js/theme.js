@@ -20,9 +20,11 @@ function applyTheme(themeName) {
     codeThemeLink.href = `/assets/css/vendors/prism-${cfg.code}.css`;
   }
 
-  // Update giscus theme
+  // Update giscus theme — only when the iframe has fully loaded from giscus.app.
+  // Sending postMessage before the iframe navigates to giscus.app causes a
+  // DOMException because the target origin doesn't match the frame's origin yet.
   const frame = document.querySelector("iframe.giscus-frame");
-  if (frame) {
+  if (frame?.src.startsWith("https://giscus.app")) {
     frame.contentWindow?.postMessage(
       { giscus: { setConfig: { theme: cfg?.giscus || effectiveTheme } } },
       "https://giscus.app"
