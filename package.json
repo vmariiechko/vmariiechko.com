@@ -14,6 +14,7 @@
     "dev:css": "postcss ./src/assets/css/main.css -o ./_site/css/style.css --watch",
     "dev:eleventy": "eleventy --serve",
     "dev": "cross-env NODE_ENV=development npm-run-all --parallel dev:*",
+    "start": "npm run build && npm run dev",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
