@@ -59,22 +59,6 @@ module.exports = function (eleventyConfig) {
                 .filter(shortByte => !shortByte.data.draft);
     });
 
-    // Create a collection of items grouped by topic
-    eleventyConfig.addCollection('itemsByTopic', (collectionApi) => {
-        const itemsByTopic = {};
-        collectionApi.getAll().forEach((item) => {
-            if (item.data.topics) {
-                item.data.topics.forEach((topic) => {
-                    if (!itemsByTopic[topic]) {
-                        itemsByTopic[topic] = [];
-                    }
-                    itemsByTopic[topic].push(item);
-                });
-            }
-        });
-        return itemsByTopic;
-    });
-
     // Create a collection of drafts
     eleventyConfig.addCollection('drafts', (collectionApi) => {
         return collectionApi.getFilteredByGlob('src/content/drafts/**/*.md');
@@ -121,16 +105,6 @@ module.exports = function (eleventyConfig) {
                 });
             }
 
-            // Topics are also tags in our taxonomy
-            if (item.data.topics && Array.isArray(item.data.topics)) {
-                item.data.topics.forEach((topic) => {
-                    tagItems[topic] = {
-                        type: 'topic',
-                        slug: filters.slugify(topic),
-                        count: (tagItems[topic]?.count || 0) + 1,
-                    };
-                });
-            }
         });
 
         return Object.keys(tagItems)

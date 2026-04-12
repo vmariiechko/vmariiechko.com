@@ -40,20 +40,13 @@ isContentPage: true
           {%- endif -%}
         </span>
       </div>
-      {% if tags or topics %}
+      {% if tags %}
         <div class="flex flex-wrap gap-2 mt-4">
-          {% if topics %}
-            {% for topic in topics %}
-              <a href="/topics/{{ topic | slugify }}/" class="tag-chip hover:border-accent transition-colors">{{ topic }}</a>
-            {% endfor %}
-          {% endif %}
-          {% if tags %}
-            {% for tag in tags %}
-              {% if tag != 'Post' %}
-                <a href="/tags/{{ tag | slugify }}/" class="tag-chip hover:border-accent transition-colors">{{ tag }}</a>
-              {% endif %}
-            {% endfor %}
-          {% endif %}
+          {% for tag in tags %}
+            {% if tag != 'Post' %}
+              <a href="/tags/{{ tag | slugify }}/" class="tag-chip hover:border-accent transition-colors">{{ tag }}</a>
+            {% endif %}
+          {% endfor %}
         </div>
       {% endif %}
     </header>

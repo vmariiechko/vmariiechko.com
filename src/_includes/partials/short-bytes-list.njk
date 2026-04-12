@@ -2,7 +2,6 @@
 <ul class="space-y-4">
 {%- for shortByte in items -%}
   {%- set allTags = [] -%}
-  {%- if shortByte.data.topics -%}{%- set allTags = allTags | concat(shortByte.data.topics) -%}{%- endif -%}
   {%- if shortByte.data.tags -%}
     {%- for tag in shortByte.data.tags -%}
       {%- if tag != "Short Byte" -%}{%- set allTags = allTags | concat([tag]) -%}{%- endif -%}
@@ -23,23 +22,15 @@
           <span>{{ shortByte | readingTime }}</span>
         </span>
       </div>
-      {%- if shortByte.data.topics or shortByte.data.tags -%}
+      {%- if shortByte.data.tags -%}
       <div class="flex items-center gap-2 flex-wrap">
         {%- set tagCount = 0 -%}
-        {%- if shortByte.data.topics -%}
-          {%- for topic in shortByte.data.topics | limit(3) -%}
-            <a href="/tags/{{ topic | slugify }}/" class="tag-chip-sm hover:border-accent transition-colors">{{ topic }}</a>
+        {%- for tag in shortByte.data.tags -%}
+          {%- if tag != "Short Byte" and tagCount < 3 -%}
+            <a href="/tags/{{ tag | slugify }}/" class="tag-chip-sm hover:border-accent transition-colors">{{ tag }}</a>
             {%- set tagCount = tagCount + 1 -%}
-          {%- endfor -%}
-        {%- endif -%}
-        {%- if tagCount < 3 and shortByte.data.tags -%}
-          {%- for tag in shortByte.data.tags -%}
-            {%- if tag != "Short Byte" and tagCount < 3 -%}
-              <a href="/tags/{{ tag | slugify }}/" class="tag-chip-sm hover:border-accent transition-colors">{{ tag }}</a>
-              {%- set tagCount = tagCount + 1 -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
       </div>
       {%- endif -%}
     </div>

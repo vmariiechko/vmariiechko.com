@@ -2,8 +2,7 @@
 title: My Test Post
 date: 2025-06-30
 description: "This is a sample post to demonstrate the blog's features."
-tags: ["test"]
-topics: ["Databricks"]
+tags: ["Databricks", "test"]
 lastUpdated: 2025-10-30
 readingTime: "30 min read; eternity to write"
 ---

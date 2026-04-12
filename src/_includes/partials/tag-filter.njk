@@ -1,12 +1,5 @@
 {%- set uniqueTags = [] -%}
 {%- for item in pagination.items -%}
-  {%- if item.data.topics -%}
-    {%- for topic in item.data.topics -%}
-      {%- if topic not in uniqueTags -%}
-        {%- set uniqueTags = uniqueTags | concat([topic]) -%}
-      {%- endif -%}
-    {%- endfor -%}
-  {%- endif -%}
   {%- if item.data.tags -%}
     {%- for tag in item.data.tags -%}
       {%- if tag != "Post" and tag != "Short Byte" and tag not in uniqueTags -%}

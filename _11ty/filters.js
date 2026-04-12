@@ -124,18 +124,15 @@ module.exports = {
             .replace(/-+$/, '');         // Trim - from end
     },
 
-    // Filter collection by tag (matches both tags and topics fields)
+    // Filter collection by tag
     // @param {Array} collection - Collection of items to filter
     // @param {string} tagName - Tag name to filter by
     // @returns {Array} Filtered items that have the tag
     filterTagList: (collection, tagName) => {
         return collection.filter((item) => {
             if (item.data.draft) return false;
-
             const tags = item.data.tags || [];
-            const topics = item.data.topics || [];
-
-            return tags.includes(tagName) || topics.includes(tagName);
+            return tags.includes(tagName);
         }).sort((a, b) => b.date - a.date);
     },
 };

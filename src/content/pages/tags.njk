@@ -1,7 +1,7 @@
 ---
 layout: layouts/base.njk
 title: "All Tags"
-description: "Browse all topics and tags used across posts and short bytes."
+description: "Browse all tags used across posts and short bytes."
 permalink: /tags/
 eleventyExcludeFromCollections: true
 ---
@@ -16,7 +16,7 @@ eleventyExcludeFromCollections: true
     {%- if collections.allTags.length > 0 -%}
     <div class="not-prose flex flex-wrap gap-2.5">
       {%- for tag in collections.allTags -%}
-      <a href="/{{ tag.type }}s/{{ tag.slug }}/" class="inline-flex items-center gap-2 px-3.5 py-1.5 text-sm no-underline border border-border rounded-full hover:border-accent hover:scale-105 transition-all group">
+      <a href="/tags/{{ tag.slug }}/" class="inline-flex items-center gap-2 px-3.5 py-1.5 text-sm no-underline border border-border rounded-full hover:border-accent hover:scale-105 transition-all group">
         <span class="font-medium group-hover:text-accent transition-colors">
           {{ tag.name }}
         </span>
