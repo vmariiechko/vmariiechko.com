@@ -1,6 +1,7 @@
 ---
 layout: layouts/base.njk
 isContentPage: true
+newsletterInContent: true
 ---
 
 {%- set toc = content | extractToc -%}
@@ -55,10 +56,18 @@ isContentPage: true
       {{ content | safe }}
     </div>
 
-    {# Like button - end of content, before comments #}
+    {# Combined engagement block: newsletter + like button share one bordered section.
+       Falls back to standalone like button if newsletter is disabled. #}
+    {% if site.newsletter.enabled %}
+    <div class="content-engagement not-prose mt-12">
+      {% include "partials/like-button.njk" %}
+      {% include "partials/newsletter.njk" %}
+    </div>
+    {% else %}
     <div class="mt-12">
       {% include "partials/like-button.njk" %}
     </div>
+    {% endif %}
 
     <div id="comments" class="mt-12"></div>
     <script src="/assets/js/comments.js"></script>
@@ -112,3 +121,6 @@ isContentPage: true
 <script src="/assets/js/vendors/medium-zoom.min.js" defer></script>
 <script src="/assets/js/zoom.js" defer></script>
 {% endif %}
+
+{# Scroll to top button #}
+{% include "partials/scroll-to-top.njk" %}

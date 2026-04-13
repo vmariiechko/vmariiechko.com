@@ -956,7 +956,7 @@ h2, h3, h4, h5, h6 {
     position: fixed;
     right: max(1rem, calc((100vw - 896px) / 2 - 280px));
     top: 6rem;
-    bottom: 2rem;
+    bottom: 5rem; /* reserve space for scroll-to-top button (1.5rem offset + 2.5rem height + 0.5rem gap) */
     width: 256px;
     transition: transform 0.3s ease, opacity 0.3s ease;
   }
@@ -1073,7 +1073,7 @@ h2, h3, h4, h5, h6 {
 
 /* Like Button */
 .like-button-container {
-  @apply flex flex-col items-center gap-2 py-6;
+  @apply flex flex-col items-center gap-2 py-8;
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
 }
@@ -1170,13 +1170,6 @@ h2, h3, h4, h5, h6 {
   animation: likeAnimation 0.6s ease;
 }
 
-/* Description text */
-.like-description {
-  @apply text-sm text-center;
-  color: var(--muted);
-  margin: 0;
-  max-width: 32rem;
-}
 
 /* Accessibility: Subtle state change for liked button */
 /* Keep button styling minimal - focus on the heart */
@@ -1541,6 +1534,80 @@ h2, h3, h4, h5, h6 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+  }
+}
+
+/* Combined engagement block on content pages: like button + newsletter share one bordered section */
+.content-engagement {
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+  padding-bottom: 2rem; /* consistent closing space, matching like-button py-6 (2rem) */
+}
+
+/* Like button is first — strip individual borders, keep its py-6 (2rem) top/bottom spacing */
+.content-engagement .like-button-container {
+  border-top: none;
+  border-bottom: none;
+  padding-bottom: 3rem; /* tighten gap to newsletter — newsletter's top gap handled here */
+}
+
+/* Newsletter form — sits flush under like section, parent owns the bottom padding */
+.content-engagement > .newsletter-form {
+  padding-bottom: 0;
+}
+
+/* ─── Scroll to Top ─── */
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 45;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.scroll-to-top--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  .scroll-to-top:hover {
+    color: var(--text);
+    border-color: var(--accent);
+  }
+}
+
+.scroll-to-top:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.scroll-to-top svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* On wide screens align with TOC sidebar column center */
+@media (min-width: 1440px) {
+  .scroll-to-top {
+    /* Sidebar: right: max(1rem, (100vw - 896px)/2 - 280px), width: 256px.
+       Center the button (40px wide) in that column:
+       = sidebar_right + 128px - 20px = sidebar_right + 108px */
+    right: max(calc(1rem + 108px), calc((100vw - 896px) / 2 - 172px));
   }
 }
 

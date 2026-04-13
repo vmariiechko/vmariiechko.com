@@ -1,5 +1,5 @@
 <footer class="mt-12 pt-6 border-t border-border text-sm text-muted">
-  {% if site.newsletter.enabled %}
+  {% if site.newsletter.enabled and not newsletterInContent %}
   <div class="footer-newsletter">
     {% include "partials/newsletter.njk" %}
   </div>

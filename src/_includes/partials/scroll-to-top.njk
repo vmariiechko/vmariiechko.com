@@ -1,0 +1,32 @@
+{# Scroll-to-top button — included on post and short-byte layouts only #}
+<button
+  id="scroll-to-top"
+  class="scroll-to-top"
+  aria-label="Scroll to top"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true">
+    <path d="M213.66,165.66a8,8,0,0,1-11.32,0L128,91.31,53.66,165.66a8,8,0,0,1-11.32-11.32l80-80a8,8,0,0,1,11.32,0l80,80A8,8,0,0,1,213.66,165.66Z"/>
+  </svg>
+</button>
+<script>
+(function () {
+  var btn = document.getElementById('scroll-to-top');
+  if (!btn) return;
+  var THRESHOLD = 350;
+  function update() {
+    if (window.scrollY > THRESHOLD) {
+      btn.classList.add('scroll-to-top--visible');
+      btn.removeAttribute('aria-hidden');
+    } else {
+      btn.classList.remove('scroll-to-top--visible');
+      btn.setAttribute('aria-hidden', 'true');
+    }
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+  btn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.blur();
+  });
+}());
+</script>
