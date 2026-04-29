@@ -155,6 +155,13 @@ module.exports = function (eleventyConfig) {
             if (Prism.languages.mermaid) {
                 delete Prism.languages.mermaid;
             }
+            // Fix bash parameter pattern to match hyphenated flags (e.g. --pipeline-id, --dry-run)
+            // init() fires before languages are loaded on-demand, so bash must be pre-loaded here
+            // Default \w+ stops at hyphens so only single-word flags like --flows get highlighted
+            require('prismjs/components/prism-bash');
+            if (Prism.languages.bash && Prism.languages.bash.parameter) {
+                Prism.languages.bash.parameter.pattern = /(^|\s)-{1,2}(?:\w+:[+-]?)?\w[\w-]*(?:\.\w+)*(?=[=\s]|$)/;
+            }
         }
     });
     eleventyConfig.setLibrary('md', md);

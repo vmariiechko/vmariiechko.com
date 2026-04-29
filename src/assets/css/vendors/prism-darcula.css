@@ -75,9 +75,12 @@ pre[class*="language-"] {
 }
 
 .token.operator,
-.token.punctuation,
 .token.attr-name {
 	color: #a9b7c6;
+}
+
+.token.punctuation {
+	color: #cc7832;
 }
 
 .token.tag,
