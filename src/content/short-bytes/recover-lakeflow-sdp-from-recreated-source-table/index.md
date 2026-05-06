@@ -1,6 +1,7 @@
 ---
 title: "Recover a Lakeflow SDP Pipeline From a Recreated Source Table"
 date: 2026-05-05
+lastUpdated: 2026-05-06
 description: "When an upstream Delta table is dropped and recreated, your Lakeflow SDP pipeline breaks with DIFFERENT_DELTA_TABLE_READ_BY_STREAMING_SOURCE. Here's how to reset checkpoint selection and recover without a full refresh."
 tags: ["Databricks", "Lakeflow SDP", "Spark Structured Streaming", "Troubleshooting"]
 ---
@@ -97,6 +98,23 @@ python sdp_reset_checkpoint_local.py \
 
 The dry-run issues a `validate_only` update; the API returns an `update_id` and the pipeline stays untouched. Once that succeeds, drop `--dry-run` to apply the reset. Pass multiple flows space-separated.
 
+## Pair the reset with `startingVersion`
+
+After `reset_checkpoint_selection` clears the checkpoint, Spark treats that flow as a brand-new stream. The `startingVersion` option on your source `readStream` is only consulted when no checkpoint exists, so without the reset, code-level changes to `startingVersion` are silently ignored. The reset is what makes them take effect.
+
+By default (no `startingVersion` set), the fresh stream reads from version 0 of the new Delta table: all historical data, which is what produces the Bronze duplicate events. To skip the reprocessing entirely, set `.option("startingVersion", "latest")` (or a specific version) on the source `readStream` before triggering the reset:
+
+```python
+(
+    spark.readStream
+        .format("delta")
+        .option("startingVersion", "latest")  # or a specific version like "42"
+        .table("catalog.schema.source_table")
+)
+```
+
+The right version depends on how the new table was seeded relative to the old one. If your Silver layer uses SCD logic (`dp.create_auto_cdc_flow` or similar), it'll dedupe whatever Bronze gets either way. If not, `startingVersion` is your cleanest exit.
+
 ## Gotchas I hit
 
 **Flow names must be FQNs.** Pass just the table name (`my_table`) and you get:
@@ -111,8 +129,6 @@ The pipeline graph registers flows by their fully-qualified Unity Catalog name (
 **Reset triggers a pipeline update.** The Pipelines API has no "reset only" endpoint. `reset_checkpoint_selection` is a parameter on `start_update`, so calling it always kicks off an update. After the script returns the `update_id`, the pipeline transitions from IDLE to RUNNING. If you want it stopped, cancel from the UI right after.
 
 **Older SDKs don't expose the parameter.** `reset_checkpoint_selection` landed in `databricks-sdk` v0.100.0. Anything older and the native call raises `TypeError`. The fallback path bypasses this by hitting the underlying REST endpoint via `WorkspaceClient.api_client.do`, which is also useful any time the SDK lags behind a documented API feature.
-
-**Bronze may briefly hold duplicates.** Resetting the checkpoint re-reads from the start of the new source table (or wherever your read options point). If your Silver layer uses SCD logic (`dp.create_auto_cdc_flow` or similar), it'll dedupe naturally. If not, plan for it.
 
 ::: callout-info
 **Worth adding for next time:** set `pipelines.reset.allowed = false` on your Bronze streaming tables. It blocks a full refresh from wiping that table, which is your insurance for the next time something like this happens. It doesn't help with the checkpoint mismatch (the script above does), but it stops a panicked "let me just refresh everything" from costing you raw history.
