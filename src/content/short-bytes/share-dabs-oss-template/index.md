@@ -12,6 +12,10 @@ You know the pattern. You've done it before (or you've read about it). But wirin
 
 I built a template that handles this.
 
+Prefer to watch? Here's a ~15-min walkthrough of the template in action.
+
+{% youtube "-5PztHN3g70", "", "" %}
+
 ## One command, your setup
 
 ```bash
