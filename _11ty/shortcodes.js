@@ -34,6 +34,41 @@ async function imageShortcode(src, alt, caption, sizes = '100vw', link = false) 
     return imageHTML;
 }
 
+const YOUTUBE_ID_PATTERN = /^[A-Za-z0-9_-]{11}$/;
+
+function escapeAttr(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/"/g, '&quot;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+
+function youtubeShortcode(videoId, caption = '', title = '') {
+    if (!videoId || !YOUTUBE_ID_PATTERN.test(videoId)) {
+        throw new Error(
+            `Invalid YouTube videoId on youtube shortcode: "${videoId}". ` +
+            `Expected the 11-character ID from a youtu.be/<id> or youtube.com/watch?v=<id> URL.`
+        );
+    }
+
+    const iframeTitle = escapeAttr(title || caption || 'YouTube video player');
+    const src = `https://www.youtube-nocookie.com/embed/${videoId}`;
+
+    const iframe =
+        `<div class="yt-embed">` +
+            `<iframe src="${src}" title="${iframeTitle}" loading="lazy" ` +
+                `referrerpolicy="strict-origin-when-cross-origin" ` +
+                `allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" ` +
+                `allowfullscreen></iframe>` +
+        `</div>`;
+
+    if (caption) {
+        return `<figure class="captioned-figure">${iframe}<figcaption>${caption}</figcaption></figure>`;
+    }
+    return `<figure class="captioned-figure">${iframe}</figure>`;
+}
+
 module.exports = {
     year: () => new Date().getFullYear().toString(),
 
@@ -46,5 +81,9 @@ module.exports = {
         const fullSrc = path.join(postDirectory, src);
         const sizes = '(max-width: 768px) 100vw, 990px';
         return imageShortcode(fullSrc, alt, caption, sizes, link);
+    },
+
+    youtube: function (videoId, caption = '', title = '') {
+        return youtubeShortcode(videoId, caption, title);
     },
 };

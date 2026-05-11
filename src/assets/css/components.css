@@ -435,6 +435,21 @@
     cursor: zoom-in;
   }
 
+  /* YouTube embed: 16:9 responsive container, themed via CSS variables */
+  .yt-embed {
+    aspect-ratio: 16 / 9;
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  .yt-embed iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
   /* Pagination */
   .pagination-nav {
     @apply mt-12 pt-6 border-t;
