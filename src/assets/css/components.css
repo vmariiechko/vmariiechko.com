@@ -1738,6 +1738,54 @@ main {
   animation: brick-settle 0.35s ease-out both;
 }
 
+/* Footnotes */
+.footnotes {
+  margin-top: 2.5rem;
+  font-size: var(--fs-footnote);
+  color: var(--muted);
+  line-height: var(--lh-body);
+}
+
+.footnotes-sep {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-bottom: 1.25rem;
+}
+
+.footnotes-list {
+  padding-left: 1.5rem;
+}
+
+.footnote-item {
+  margin-bottom: 0.5rem;
+}
+
+.footnote-item p {
+  margin: 0;
+}
+
+.footnote-ref a {
+  color: var(--link);
+  text-decoration: none;
+  font-size: 0.8em;
+  font-weight: 600;
+}
+
+.footnote-ref a:hover {
+  text-decoration: underline;
+}
+
+.footnote-backref {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 0.25rem;
+  font-size: 0.9em;
+}
+
+.footnote-backref:hover {
+  color: var(--link);
+}
+
 /* Drop in from slightly above, bounce softly */
 @keyframes brick-settle {
   0%   { transform: translateY(-10px); opacity: 0; }

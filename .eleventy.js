@@ -5,6 +5,7 @@ const markdownItPrism = require('markdown-it-prism');
 const markdownItContainer = require('markdown-it-container');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItTOC = require('markdown-it-table-of-contents');
+const markdownItFootnote = require('markdown-it-footnote');
 const phosphor = require('eleventy-plugin-phosphoricons');
 
 const shortcodes = require('./_11ty/shortcodes.js');
@@ -147,6 +148,7 @@ module.exports = function (eleventyConfig) {
     md.use(markdownItContainer, 'callout-info');
     md.use(markdownItContainer, 'callout-success');
     md.use(markdownItContainer, 'callout-warning');
+    md.use(markdownItFootnote);
     md.use(markdownItPrism, {
         defaultLanguage: "plaintext",
         // Prevent prism from processing mermaid blocks
