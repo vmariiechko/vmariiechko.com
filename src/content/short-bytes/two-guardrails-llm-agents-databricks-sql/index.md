@@ -1,6 +1,6 @@
 ---
 title: "Two Guardrails for Letting LLM Agents Query Your Databricks Tables"
-date: 2026-05-19
+date: 2026-05-18
 description: "Hand `databricks experimental aitools tools query` to an LLM agent raw and two things go wrong: it can write, and JSON output bloats your context window. Here's the open-source wrapper I built to fix both."
 tags: ["Databricks", "LLM Agents", "Open Source"]
 ---
